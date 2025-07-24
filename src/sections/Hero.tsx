@@ -35,7 +35,7 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="6s"
 					>
-						<StarIcon className="size-28 text-emerald-300" />
+						<StarIcon className="size-28 text-yellow-200 drop-shadow-[0_0_8px_rgba(255,255,224,0.4)]" />
 					</HeroOrbit>
 					<HeroOrbit
 						size={550}
@@ -45,7 +45,7 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="6s"
 					>
-						<StarIcon className="size-12 text-emerald-300" />
+						<StarIcon className="size-12 text-yellow-200 drop-shadow-[0_0_6px_rgba(255,255,224,0.3)]" />
 					</HeroOrbit>
 					<HeroOrbit
 						size={590}
@@ -55,7 +55,7 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="6s"
 					>
-						<StarIcon className="size-8 text-emerald-300" />
+						<StarIcon className="size-8 text-yellow-200 drop-shadow-[0_0_4px_rgba(255,255,224,0.3)]" />
 					</HeroOrbit>
 
 					{/* sparkle orbits */}
@@ -67,7 +67,7 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="3s"
 					>
-						<SparkleIcon className="size-8 text-emerald-300/20" />
+						<SparkleIcon className="size-8 text-white/40 drop-shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
 					</HeroOrbit>
 					<HeroOrbit
 						size={440}
@@ -77,7 +77,7 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="3s"
 					>
-						<SparkleIcon className="size-5 text-emerald-300/20" />
+						<SparkleIcon className="size-5 text-white/40 drop-shadow-[0_0_2px_rgba(255,255,255,0.2)]" />
 					</HeroOrbit>
 					<HeroOrbit
 						size={530}
@@ -87,7 +87,7 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="3s"
 					>
-						<SparkleIcon className="size-10 text-emerald-300/20" />
+						<SparkleIcon className="size-10 text-white/40 drop-shadow-[0_0_4px_rgba(255,255,255,0.2)]" />
 					</HeroOrbit>
 					<HeroOrbit
 						size={710}
@@ -97,18 +97,18 @@ export const HeroSection = () => {
 						shouldSpin
 						spinDuration="3s"
 					>
-						<SparkleIcon className="size-14 text-emerald-300/20" />
+						<SparkleIcon className="size-14 text-white/40 drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]" />
 					</HeroOrbit>
 
 					{/* tiny-dot orbits */}
 					<HeroOrbit size={720} rotation={85} shouldOrbit orbitDuration="46s">
-						<div className="size-3 rounded-full bg-emerald-300/20" />
+						<div className="size-3 rounded-full bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.3)]" />
 					</HeroOrbit>
 					<HeroOrbit size={520} rotation={-41} shouldOrbit orbitDuration="34s">
-						<div className="size-2 rounded-full bg-emerald-300/20" />
+						<div className="size-2 rounded-full bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.3)]" />
 					</HeroOrbit>
 					<HeroOrbit size={650} rotation={-5} shouldOrbit orbitDuration="42s">
-						<div className="size-2 rounded-full bg-emerald-300/20" />
+						<div className="size-2 rounded-full bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.3)]" />
 					</HeroOrbit>
 
 					{/* centered globe */}
