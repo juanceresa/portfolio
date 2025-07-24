@@ -10,6 +10,7 @@ import CssIcon from "@/assets/icons/css3.svg";
 import ReactIcon from "@/assets/icons/react.svg";
 import ChromeIcon from "@/assets/icons/chrome.svg";
 import GithubIcon from "@/assets/icons/github.svg";
+import BentoItemMapLocation from "@/components/MapLocation";
 
 
 
@@ -83,6 +84,9 @@ export const AboutSection = () => {
                 Explore my interests, hobbies, and the things that inspire me outside of coding.
               </p>
             </div>
+        </Card>
+        <Card className="h-64">
+          <BentoItemMapLocation className='rounded-3xl' />
         </Card>
       </div>
     </div>
