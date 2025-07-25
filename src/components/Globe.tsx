@@ -89,7 +89,7 @@ function ResponsiveLights() {
 			<spotLight
 				ref={sideSpotRef}
 				color="#ffff9f"
-				intensity={20}
+				intensity={10}
 				distance={40}
 				angle={Math.PI / 2} /* 180° full cone */
 				penumbra={1} /* soft edge for long gradient */

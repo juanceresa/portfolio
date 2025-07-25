@@ -131,7 +131,7 @@ export const HeroSection = () => {
 
 						{/* centered globe */}
 						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto">
-							<div className="w-[800px] h-[800px]">
+							<div className="w-[700px] h-[700px]">
 								<Globe onGlobeLoaded={handleGlobeLoaded} />
 							</div>
 						</div>
@@ -163,7 +163,7 @@ export const HeroSection = () => {
 					</div>
 				</div>
 				<div className="container mx-auto relative">
-					<div className="mt-11 flex flex-col md:flex-row justify-center items-center gap-4 pointer-events-auto">
+					<div className="mt-20 flex flex-col md:flex-row justify-center items-center gap-4 pointer-events-auto">
 						<a href="#about">
 							<MagicButton
 								title="Show my work"
