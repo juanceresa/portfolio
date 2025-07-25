@@ -25,9 +25,9 @@ export const HeroSection = () => {
 			{!globeLoaded && <LoadingScreen />}
 			<div className="relative py-32 md:py-48 lg:py-60 overflow-hidden">
 				{/* Space background with opacity overlay */}
-				<div 
+				<div
 					className="absolute inset-0"
-					style={{ 
+					style={{
 						backgroundImage: `url(${spaceImage.src})`,
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
@@ -37,10 +37,23 @@ export const HeroSection = () => {
 				<div className="absolute inset-0 bg-black/60" />
 				{/* Gradient blend to rest of website - sharp transition */}
 				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-10" />
+				
+				{/* AVAILABILITY BADGE - Top Left of entire screen */}
+				<div className="fixed top-4 left-4 z-30">
+					<div className="bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-2 rounded-lg pointer-events-auto">
+						<div className="relative size-3">
+							<div className="absolute size-full animate-ping rounded-full bg-green-300 opacity-65"></div>
+							<div className="size-full rounded-full bg-green-400 drop-shadow-[0_0_4px_rgba(34,197,94,0.5)]"></div>
+						</div>
+						<span className="text-sm font-medium">
+							Available for new projects
+						</span>
+					</div>
+				</div>
+				
 				<div className="container mx-auto relative">
 					{/* BACKGROUND */}
 					<div className="absolute inset-0 pointer-events-none z-0">
-
 						{/* rings */}
 						<div className="size-[620px] hero-ring"></div>
 						<div className="size-[820px] hero-ring"></div>
@@ -152,15 +165,7 @@ export const HeroSection = () => {
 							alt="person behind laptop"
 							className="w-[100px] h-[100px]"
 						/>
-						<div className="mt-4 bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-2 rounded-lg pointer-events-auto">
-							<div className="relative size-3">
-								<div className="absolute size-full animate-ping rounded-full bg-green-300 opacity-65"></div>
-								<div className="size-full rounded-full bg-green-400 drop-shadow-[0_0_4px_rgba(34,197,94,0.5)]"></div>
-							</div>
-							<span className="text-sm font-medium">
-								Available for new projects
-							</span>
-						</div>
+
 						<h1 className="mt-8 font-serif text-3xl md:text-5xl tracking-wide">
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
