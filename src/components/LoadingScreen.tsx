@@ -1,4 +1,3 @@
-// components/LoadingScreen.tsx
 "use client";
 
 export default function LoadingScreen() {
@@ -10,7 +9,7 @@ export default function LoadingScreen() {
 					<div className="absolute inset-0 rounded-full border-4 border-emerald-300/20"></div>
 					<div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-300 animate-spin"></div>
 				</div>
-				
+
 				{/* Loading text */}
 				<div className="text-white/60 text-sm font-medium">
 					Loading 3D Globe...

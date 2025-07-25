@@ -1,4 +1,3 @@
-// components/HeroSection.tsx
 "use client";
 
 import memojiImage from "@/assets/images/memoji-computer.png";

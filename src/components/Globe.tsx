@@ -1,4 +1,3 @@
-// components/Globe.tsx
 "use client";
 
 import { useRef, useState, useEffect } from "react";
@@ -11,10 +10,10 @@ function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 	const groupRef = useRef<THREE.Group>(null);
 
 	// Load model + texture
-	const fbx = useFBX("/assets/models/low-poly-planet-earth/source/Planet.fbx");
+	const fbx = useFBX("/models/low-poly-planet-earth/source/Planet.fbx");
 	const texture = useLoader(
 		THREE.TextureLoader,
-		"/assets/models/low-poly-planet-earth/textures/Texture_Planet.png"
+		"/models/low-poly-planet-earth/textures/Texture_Planet.png"
 	);
 	const clonedScene = fbx.clone();
 
@@ -60,7 +59,7 @@ function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 }
 
 // Preload for faster startup
-useFBX.preload("/assets/models/low-poly-planet-earth/source/Planet.fbx");
+useFBX.preload("/models/low-poly-planet-earth/source/Planet.fbx");
 
 // Create a context for globe loading state
 export const useGlobeLoading = () => {
@@ -68,7 +67,11 @@ export const useGlobeLoading = () => {
 	return { globeLoaded, setGlobeLoaded };
 };
 
-export default function Globe({ onGlobeLoaded }: { onGlobeLoaded?: () => void }) {
+export default function Globe({
+	onGlobeLoaded,
+}: {
+	onGlobeLoaded?: () => void;
+}) {
 	const [mounted, setMounted] = useState(false);
 	const [globeLoaded, setGlobeLoaded] = useState(false);
 	const controlsRef = useRef<OrbitControlsImpl>(null);
@@ -119,10 +122,12 @@ export default function Globe({ onGlobeLoaded }: { onGlobeLoaded?: () => void })
 				<directionalLight position={[5, 5, 5]} intensity={0.8} />
 
 				{/* our Earth */}
-				<EarthModel onLoaded={() => {
-					setGlobeLoaded(true);
-					onGlobeLoaded?.();
-				}} />
+				<EarthModel
+					onLoaded={() => {
+						setGlobeLoaded(true);
+						onGlobeLoaded?.();
+					}}
+				/>
 
 				{/* controls with momentum & "weight" */}
 				<OrbitControls
