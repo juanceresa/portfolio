@@ -1,10 +1,82 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, useLoader, useFrame } from "@react-three/fiber";
 import { useFBX, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+
+function RotatingLights() {
+	const directionalLightRef = useRef<THREE.DirectionalLight>(null);
+	const pointLight1Ref = useRef<THREE.PointLight>(null);
+	const pointLight2Ref = useRef<THREE.PointLight>(null);
+
+	useFrame((state) => {
+		// Match the star rotation duration (52s) - same as in Hero.tsx
+		const rotationSpeed = (2 * Math.PI) / (52 * 60); // 52 seconds in frames (60fps)
+		const time = state.clock.elapsedTime * rotationSpeed;
+
+		// Rotate main directional light around the globe
+		if (directionalLightRef.current) {
+			const radius = 8;
+			directionalLightRef.current.position.set(
+				Math.cos(time) * radius,
+				5,
+				Math.sin(time) * radius
+			);
+			// Make light always point toward the globe center
+			directionalLightRef.current.lookAt(0, 0, 0);
+		}
+
+		// Rotate accent lights in opposite direction for dynamic shadows
+		if (pointLight1Ref.current) {
+			const radius1 = 6;
+			pointLight1Ref.current.position.set(
+				Math.cos(-time + Math.PI/3) * radius1,
+				4,
+				Math.sin(-time + Math.PI/3) * radius1
+			);
+		}
+
+		if (pointLight2Ref.current) {
+			const radius2 = 7;
+			pointLight2Ref.current.position.set(
+				Math.cos(time + Math.PI) * radius2,
+				-3,
+				Math.sin(time + Math.PI) * radius2
+			);
+		}
+	});
+
+	return (
+		<>
+			{/* Base ambient light */}
+			<ambientLight intensity={0.4} />
+			
+			{/* Main rotating directional light - creates primary shadows */}
+			<directionalLight 
+				ref={directionalLightRef}
+				intensity={1.0}
+				color="#ffffff"
+				castShadow
+				shadow-mapSize-width={2048}
+				shadow-mapSize-height={2048}
+			/>
+			
+			{/* Rotating accent lights for depth */}
+			<pointLight 
+				ref={pointLight1Ref}
+				intensity={0.3} 
+				color="#87ceeb"  
+			/>
+			<pointLight 
+				ref={pointLight2Ref}
+				intensity={0.2} 
+				color="#fff8dc"
+			/>
+		</>
+	);
+}
 
 function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 	const groupRef = useRef<THREE.Group>(null);
@@ -32,7 +104,11 @@ function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 
 				const mat = child.material as THREE.MeshStandardMaterial;
 				mat.map = texture;
-				mat.color = new THREE.Color(1.3, 1.2, 1.1); // boost saturation
+				mat.color = new THREE.Color(0.9, 1.8, 3.2); // dark blue seas with deep greens
+				mat.metalness = 0.2; // reduce metallic to preserve colors
+				mat.roughness = 0.5; // slightly more rough to hold texture colors
+				mat.emissive = new THREE.Color(0.05, 0.08, 0.1); // reduce emissive glow
+				mat.emissiveIntensity = 0.05;
 				mat.needsUpdate = true;
 			}
 		});
@@ -117,9 +193,8 @@ export default function Globe({
 				performance={{ min: 0.8 }}
 				dpr={[1, 1.5]}
 			>
-				{/* lighting */}
-				<ambientLight intensity={0.6} />
-				<directionalLight position={[5, 5, 5]} intensity={0.8} />
+				{/* rotating lighting system */}
+				<RotatingLights />
 
 				{/* our Earth */}
 				<EarthModel
