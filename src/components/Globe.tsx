@@ -16,17 +16,17 @@ function ResponsiveLights() {
 		// Base auto-rotation (52s cycle) to match star orbits
 		const baseRotationSpeed = (2 * Math.PI) / (52 * 60);
 		const baseTime = state.clock.elapsedTime * baseRotationSpeed;
-		
+
 		// Camera direction for instant responsiveness (ChatGPT's key insight)
 		const cameraDirection = state.camera.position.clone().normalize();
-		
+
 		// Auto-rotation direction
 		const autoDirection = new THREE.Vector3(
 			Math.cos(baseTime),
 			0.15,
 			Math.sin(baseTime)
 		).normalize();
-		
+
 		// Blend: 80% camera responsive + 20% auto-rotation
 		const finalDirection = cameraDirection.clone()
 			.multiplyScalar(0.8)
@@ -46,7 +46,7 @@ function ResponsiveLights() {
 			pointLight1Ref.current.position.copy(oppositePos);
 		}
 
-		// Side accent light  
+		// Side accent light
 		if (pointLight2Ref.current) {
 			const sidePos = new THREE.Vector3(-finalDirection.z, 0, finalDirection.x)
 				.normalize().multiplyScalar(10);
@@ -56,37 +56,37 @@ function ResponsiveLights() {
 
 	return (
 		<>
-			{/* DRAMATIC DAY/NIGHT TERMINATOR EFFECT */}
-			{/* Very low ambient for deep shadows */}
-			<ambientLight intensity={0.08} color="#0f0f1a" />
-			
-			{/* Balanced directional light for sharp terminator */}
-			<directionalLight 
+			{/* CLEAR DAY/NIGHT BOUNDARY - BALANCED INTENSITY */}
+			{/* Moderate ambient for visible boundary without harshness */}
+			<ambientLight intensity={0.12} color="#1a1a2e" />
+
+			{/* Strong directional light for clear terminator line */}
+			<directionalLight
 				ref={directionalLightRef}
-				intensity={1.8}
-				color="#fff5d6"
+				intensity={1.4}
+				color="#fff8e1"
 				castShadow
-				shadow-mapSize-width={4096}
-				shadow-mapSize-height={4096}
+				shadow-mapSize-width={2048}
+				shadow-mapSize-height={2048}
 				shadow-camera-near={0.1}
 				shadow-camera-far={50}
-				shadow-camera-left={-12}
-				shadow-camera-right={12}
-				shadow-camera-top={12}
-				shadow-camera-bottom={-12}
-				shadow-bias={-0.0005}
+				shadow-camera-left={-10}
+				shadow-camera-right={10}
+				shadow-camera-top={10}
+				shadow-camera-bottom={-10}
+				shadow-bias={-0.0003}
 			/>
-			
-			{/* Subtle night-side lighting for earth details */}
-			<pointLight 
+
+			{/* Night-side rim lighting for earth details */}
+			<pointLight
 				ref={pointLight1Ref}
-				intensity={0.06} 
-				color="#2a4d8a"  
+				intensity={0.04}
+				color="#4169e1"
 			/>
-			<pointLight 
+			<pointLight
 				ref={pointLight2Ref}
-				intensity={0.04} 
-				color="#1a2857"
+				intensity={0.03}
+				color="#191970"
 			/>
 		</>
 	);
@@ -108,7 +108,7 @@ function EarthModel({ onLoaded, globeRef }: { onLoaded: () => void; globeRef: Re
 		texture.minFilter = THREE.LinearMipmapLinearFilter;
 		texture.magFilter = THREE.LinearFilter;
 
-		// Apply texture & enhanced colors without whitewashing
+		// Apply texture & enhanced colors with clear day/night boundary
 		clonedScene.traverse((child) => {
 			if (child instanceof THREE.Mesh && child.material) {
 				child.frustumCulled = true;
@@ -116,11 +116,11 @@ function EarthModel({ onLoaded, globeRef }: { onLoaded: () => void; globeRef: Re
 
 				const mat = child.material as THREE.MeshStandardMaterial;
 				mat.map = texture;
-				mat.color = new THREE.Color(0.95, 1.4, 1.6); // Deep blues/greens without oversaturation
-				mat.metalness = 0.1; // Lower metalness for better color retention
-				mat.roughness = 0.8; // Higher roughness for natural earth surface
-				mat.emissive = new THREE.Color(0.02, 0.03, 0.05); // Minimal emissive to preserve shadows
-				mat.emissiveIntensity = 0.05;
+				mat.color = new THREE.Color(0.9, 1.6, 2.4); // Enhanced blues for oceans, deeper greens
+				mat.metalness = 0.15; // Slight metallic for light reflection on water
+				mat.roughness = 0.6; // Balanced roughness for boundary definition
+				mat.emissive = new THREE.Color(0.03, 0.05, 0.08); // Subtle emissive for night visibility
+				mat.emissiveIntensity = 0.08;
 				mat.needsUpdate = true;
 			}
 		});
