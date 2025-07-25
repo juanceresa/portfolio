@@ -131,7 +131,7 @@ export const HeroSection = () => {
 
 						{/* centered globe */}
 						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto">
-							<div className="w-[600px] h-[600px]">
+							<div className="w-[800px] h-[800px]">
 								<Globe onGlobeLoaded={handleGlobeLoaded} />
 							</div>
 						</div>

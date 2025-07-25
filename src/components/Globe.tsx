@@ -1,89 +1,104 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { Canvas, useLoader, useFrame } from "@react-three/fiber";
 import { useFBX, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+// Responsive lighting that follows camera + auto‑rotates
 
-// Responsive lighting that follows camera + auto-rotates
 function ResponsiveLights() {
+	/* === refs === */
 	const directionalLightRef = useRef<THREE.DirectionalLight>(null);
 	const pointLight1Ref = useRef<THREE.PointLight>(null);
-	const pointLight2Ref = useRef<THREE.PointLight>(null);
 
+	// spotlight that drives the large gradient
+	const sideSpotRef = useRef<THREE.SpotLight>(null);
+
+	/* target object the spotlight looks at (must be in scene) */
+	const sideTarget = useMemo(() => new THREE.Object3D(), []);
+
+	/* === per‑frame update === */
 	useFrame((state) => {
-		// Base auto-rotation (52s cycle) to match star orbits
-		const baseRotationSpeed = (2 * Math.PI) / (52 * 60);
-		const baseTime = state.clock.elapsedTime * baseRotationSpeed;
+		const baseSpeed = (2 * Math.PI) / (52 * 60);
+		const t = state.clock.elapsedTime * baseSpeed;
 
-		// Camera direction for instant responsiveness (ChatGPT's key insight)
-		const cameraDirection = state.camera.position.clone().normalize();
-
-		// Auto-rotation direction
-		const autoDirection = new THREE.Vector3(
-			Math.cos(baseTime),
+		const camDir = state.camera.position.clone().normalize();
+		const autoDir = new THREE.Vector3(
+			Math.cos(t),
 			0.15,
-			Math.sin(baseTime)
+			Math.sin(t)
 		).normalize();
 
-		// Blend: 80% camera responsive + 20% auto-rotation
-		const finalDirection = cameraDirection
+		const sunDir = camDir
 			.clone()
-			.multiplyScalar(0.8)
-			.add(autoDirection.multiplyScalar(0.2))
+			.multiplyScalar(0.1) // (smaller camera influence — tweak as you like)
+			.add(autoDir.multiplyScalar(0.01))
 			.normalize();
 
-		// Position main sun light
+		/* low‑intensity directional (can stay zero) */
 		if (directionalLightRef.current) {
-			const lightPosition = finalDirection.clone().multiplyScalar(15);
-			directionalLightRef.current.position.copy(lightPosition);
+			directionalLightRef.current.position.copy(
+				sunDir.clone().multiplyScalar(15)
+			);
 			directionalLightRef.current.lookAt(0, 0, 0);
 		}
 
-		// Opposite side rim light
-		if (pointLight1Ref.current) {
-			const oppositePos = finalDirection.clone().negate().multiplyScalar(12);
-			pointLight1Ref.current.position.copy(oppositePos);
-		}
+		/* rim on night side */
+		pointLight1Ref.current?.position.copy(
+			sunDir.clone().negate().multiplyScalar(12)
+		);
 
-		// Side accent light
-		if (pointLight2Ref.current) {
-			const sidePos = new THREE.Vector3(-finalDirection.z, 0, finalDirection.x)
-				.normalize()
-				.multiplyScalar(10);
-			pointLight2Ref.current.position.copy(sidePos);
+		/* side spotlight – 90° around sun + slight upward tilt */
+		if (sideSpotRef.current) {
+			const rawSide = new THREE.Vector3(-sunDir.z, 0.15, sunDir.x).normalize();
+			const sideDir = rawSide.clone().lerp(sunDir, 0.4).normalize(); // ★ blend 40 % toward sun
+
+			// ① move closer so cone footprint is larger
+			sideSpotRef.current.position.copy(sideDir.clone().multiplyScalar(7)); // same radius
+
+			// always aim at globe centre
+			sideTarget.position.set(0, 0, 0);
+			sideSpotRef.current.target = sideTarget;
 		}
 	});
 
+	/* === lights === */
 	return (
 		<>
-			{/* CLEAR DAY/NIGHT BOUNDARY - BALANCED INTENSITY */}
-			{/* Moderate ambient for visible boundary without harshness */}
-			<ambientLight intensity={6} color="#1a1a2e" />
+			<ambientLight intensity={0.02} />
 
-			{
-				<directionalLight
-					ref={directionalLightRef}
-					intensity={0}
-					// fff8e1, fff4c9
-					color="white"
-					castShadow={true}
-					shadow-mapSize-width={1024}
-					shadow-mapSize-height={1024}
-					shadow-camera-near={0.5}
-					shadow-camera-far={20}
-					shadow-camera-left={-5}
-					shadow-camera-right={5}
-					shadow-camera-top={5}
-					shadow-camera-bottom={-5}
-					shadow-radius={4}
-				/>
+			<hemisphereLight args={["#fff8e1", "#1a1a2e", 0.1]} />
 
-				/* Night-side rim lighting for earth details */
-			}
-			<pointLight ref={pointLight1Ref} intensity={0.03} color="#ffee90" />
-			<pointLight ref={pointLight2Ref} intensity={500} color="#ffee90" />
+			<directionalLight
+				ref={directionalLightRef}
+				color="#ffffff"
+				intensity={0}
+				castShadow
+			/>
+
+			<pointLight
+				ref={pointLight1Ref}
+				color="#ffee90"
+				intensity={1}
+				distance={14}
+				decay={2}
+			/>
+
+			{/* spotlight covering ~¾ of globe */}
+			<spotLight
+				ref={sideSpotRef}
+				color="#ffff9f"
+				intensity={20}
+				distance={40}
+				angle={Math.PI / 2} /* 180° full cone */
+				penumbra={1} /* soft edge for long gradient */
+				decay={1} /* gentle fall‑off */
+				castShadow={false}
+			/>
+
+			{/* spotlight target */}
+			<primitive object={sideTarget} />
 		</>
 	);
 }
@@ -118,10 +133,10 @@ function EarthModel({
 
 				const mat = child.material as THREE.MeshStandardMaterial;
 				mat.map = texture;
-				mat.color = new THREE.Color(0.9, 1.6, 2.4); // Enhanced blues for oceans, deeper greens
+				mat.color = new THREE.Color(1.5, 2, 5); // Enhanced blues for oceans, deeper greens
 				// mat.metalness = -1000; // Slight metallic for light reflection on water
 				// mat.roughness = -1000; // Balanced roughness for boundary definition
-				mat.emissive = new THREE.Color(0.03, -0.3, 0.3); // Subtle emissive for night visibility
+				mat.emissive = new THREE.Color(0.3, -0.3, 0.3); // Subtle emissive for night visibility
 				mat.emissiveIntensity = 0.08;
 				mat.needsUpdate = true;
 			}
