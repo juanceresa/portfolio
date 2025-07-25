@@ -66,9 +66,9 @@ function ResponsiveLights() {
 	/* === lights === */
 	return (
 		<>
-			<ambientLight intensity={0.02} />
+			<ambientLight intensity={0.00} />
 
-			<hemisphereLight args={["#fff8e1", "#1a1a2e", 0.1]} />
+			<hemisphereLight args={["#fff8e1", "#1a1a2e", 0.01]} />
 
 			<directionalLight
 				ref={directionalLightRef}
