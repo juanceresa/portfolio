@@ -3,7 +3,7 @@
 import memojiImage from "@/assets/images/memoji-computer.png";
 import Image from "next/image";
 import ArrowDown from "@/assets/icons/arrow-down.svg";
-import grainImage from "@/assets/images/grain.jpg";
+import spaceImage from "@/assets/images/space.png";
 import StarIcon from "@/assets/icons/star.svg";
 import SparkleIcon from "@/assets/icons/sparkle.svg";
 import { HeroOrbit } from "@/components/HeroOrbit";
@@ -24,14 +24,22 @@ export const HeroSection = () => {
 		<>
 			{!globeLoaded && <LoadingScreen />}
 			<div className="relative py-32 md:py-48 lg:py-60 overflow-hidden">
+				{/* Space background with opacity overlay */}
+				<div 
+					className="absolute inset-0"
+					style={{ 
+						backgroundImage: `url(${spaceImage.src})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						backgroundRepeat: 'no-repeat'
+					}}
+				/>
+				<div className="absolute inset-0 bg-black/60" />
+				{/* Gradient blend to rest of website */}
+				<div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-black" />
 				<div className="container mx-auto relative">
 					{/* BACKGROUND */}
-					<div className="absolute inset-0 pointer-events-none">
-						{/* grain overlay */}
-						<div
-							className="absolute inset-0 -z-30 opacity-5"
-							style={{ backgroundImage: `url(${grainImage.src})` }}
-						/>
+					<div className="absolute inset-0 pointer-events-none z-0">
 
 						{/* rings */}
 						<div className="size-[620px] hero-ring"></div>
