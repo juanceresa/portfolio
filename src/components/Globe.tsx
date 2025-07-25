@@ -28,7 +28,8 @@ function ResponsiveLights() {
 		).normalize();
 
 		// Blend: 80% camera responsive + 20% auto-rotation
-		const finalDirection = cameraDirection.clone()
+		const finalDirection = cameraDirection
+			.clone()
 			.multiplyScalar(0.8)
 			.add(autoDirection.multiplyScalar(0.2))
 			.normalize();
@@ -49,7 +50,8 @@ function ResponsiveLights() {
 		// Side accent light
 		if (pointLight2Ref.current) {
 			const sidePos = new THREE.Vector3(-finalDirection.z, 0, finalDirection.x)
-				.normalize().multiplyScalar(10);
+				.normalize()
+				.multiplyScalar(10);
 			pointLight2Ref.current.position.copy(sidePos);
 		}
 	});
@@ -58,41 +60,41 @@ function ResponsiveLights() {
 		<>
 			{/* CLEAR DAY/NIGHT BOUNDARY - BALANCED INTENSITY */}
 			{/* Moderate ambient for visible boundary without harshness */}
-			<ambientLight intensity={0.12} color="#1a1a2e" />
+			<ambientLight intensity={6} color="#1a1a2e" />
 
-			{/* Strong directional light for clear terminator line */}
-			<directionalLight
-				ref={directionalLightRef}
-				intensity={1.4}
-				color="#fff8e1"
-				castShadow
-				shadow-mapSize-width={2048}
-				shadow-mapSize-height={2048}
-				shadow-camera-near={0.1}
-				shadow-camera-far={50}
-				shadow-camera-left={-10}
-				shadow-camera-right={10}
-				shadow-camera-top={10}
-				shadow-camera-bottom={-10}
-				shadow-bias={-0.0003}
-			/>
+			{
+				<directionalLight
+					ref={directionalLightRef}
+					intensity={0}
+					// fff8e1, fff4c9
+					color="white"
+					castShadow={true}
+					shadow-mapSize-width={1024}
+					shadow-mapSize-height={1024}
+					shadow-camera-near={0.5}
+					shadow-camera-far={20}
+					shadow-camera-left={-5}
+					shadow-camera-right={5}
+					shadow-camera-top={5}
+					shadow-camera-bottom={-5}
+					shadow-radius={4}
+				/>
 
-			{/* Night-side rim lighting for earth details */}
-			<pointLight
-				ref={pointLight1Ref}
-				intensity={0.04}
-				color="#4169e1"
-			/>
-			<pointLight
-				ref={pointLight2Ref}
-				intensity={0.03}
-				color="#191970"
-			/>
+				/* Night-side rim lighting for earth details */
+			}
+			<pointLight ref={pointLight1Ref} intensity={0.03} color="#ffee90" />
+			<pointLight ref={pointLight2Ref} intensity={500} color="#ffee90" />
 		</>
 	);
 }
 
-function EarthModel({ onLoaded, globeRef }: { onLoaded: () => void; globeRef: React.RefObject<THREE.Group> }) {
+function EarthModel({
+	onLoaded,
+	globeRef,
+}: {
+	onLoaded: () => void;
+	globeRef: React.RefObject<THREE.Group>;
+}) {
 	// Load model + texture
 	const fbx = useFBX("/models/low-poly-planet-earth/source/Planet.fbx");
 	const texture = useLoader(
@@ -117,9 +119,9 @@ function EarthModel({ onLoaded, globeRef }: { onLoaded: () => void; globeRef: Re
 				const mat = child.material as THREE.MeshStandardMaterial;
 				mat.map = texture;
 				mat.color = new THREE.Color(0.9, 1.6, 2.4); // Enhanced blues for oceans, deeper greens
-				mat.metalness = 0.15; // Slight metallic for light reflection on water
-				mat.roughness = 0.6; // Balanced roughness for boundary definition
-				mat.emissive = new THREE.Color(0.03, 0.05, 0.08); // Subtle emissive for night visibility
+				// mat.metalness = -1000; // Slight metallic for light reflection on water
+				// mat.roughness = -1000; // Balanced roughness for boundary definition
+				mat.emissive = new THREE.Color(0.03, -0.3, 0.3); // Subtle emissive for night visibility
 				mat.emissiveIntensity = 0.08;
 				mat.needsUpdate = true;
 			}
