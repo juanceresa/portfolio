@@ -71,7 +71,7 @@ export const HeroSection = () => {
 							<StarIcon className="size-8 text-yellow-200 drop-shadow-[0_0_4px_rgba(255,255,224,0.3)]" />
 						</HeroOrbit>
 
-						{/* sparkle orbits */}
+						{/* sparkle orbits - cosmic colors */}
 						<HeroOrbit
 							size={430}
 							rotation={-14}
@@ -80,7 +80,7 @@ export const HeroSection = () => {
 							shouldSpin
 							spinDuration="3s"
 						>
-							<SparkleIcon className="size-8 text-white/40 drop-shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
+							<SparkleIcon className="size-8 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
 						</HeroOrbit>
 						<HeroOrbit
 							size={440}
@@ -90,7 +90,7 @@ export const HeroSection = () => {
 							shouldSpin
 							spinDuration="3s"
 						>
-							<SparkleIcon className="size-5 text-white/40 drop-shadow-[0_0_2px_rgba(255,255,255,0.2)]" />
+							<SparkleIcon className="size-5 text-cyan-300 drop-shadow-[0_0_6px_rgba(103,232,249,0.5)]" />
 						</HeroOrbit>
 						<HeroOrbit
 							size={530}
@@ -100,7 +100,7 @@ export const HeroSection = () => {
 							shouldSpin
 							spinDuration="3s"
 						>
-							<SparkleIcon className="size-10 text-white/40 drop-shadow-[0_0_4px_rgba(255,255,255,0.2)]" />
+							<SparkleIcon className="size-10 text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.6)]" />
 						</HeroOrbit>
 						<HeroOrbit
 							size={710}
@@ -110,12 +110,12 @@ export const HeroSection = () => {
 							shouldSpin
 							spinDuration="3s"
 						>
-							<SparkleIcon className="size-14 text-white/40 drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]" />
+							<SparkleIcon className="size-14 text-blue-400 drop-shadow-[0_0_12px_rgba(96,165,250,0.7)]" />
 						</HeroOrbit>
 
-						{/* tiny-dot orbits */}
+						{/* tiny-dot orbits - cosmic dots */}
 						<HeroOrbit size={720} rotation={85} shouldOrbit orbitDuration="48s">
-							<div className="size-3 rounded-full bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.3)]" />
+							<div className="size-3 rounded-full bg-violet-400/80 shadow-[0_0_8px_rgba(139,92,246,0.6)]" />
 						</HeroOrbit>
 						<HeroOrbit
 							size={520}
@@ -123,10 +123,10 @@ export const HeroSection = () => {
 							shouldOrbit
 							orbitDuration="48s"
 						>
-							<div className="size-2 rounded-full bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.3)]" />
+							<div className="size-2 rounded-full bg-teal-400/80 shadow-[0_0_6px_rgba(45,212,191,0.5)]" />
 						</HeroOrbit>
 						<HeroOrbit size={650} rotation={-5} shouldOrbit orbitDuration="48s">
-							<div className="size-2 rounded-full bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.3)]" />
+							<div className="size-2 rounded-full bg-indigo-400/80 shadow-[0_0_6px_rgba(129,140,248,0.5)]" />
 						</HeroOrbit>
 
 						{/* centered globe */}
