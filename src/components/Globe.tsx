@@ -6,81 +6,93 @@ import { useFBX, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
-function RotatingLights() {
+// Responsive lighting that follows camera + auto-rotates
+function ResponsiveLights() {
 	const directionalLightRef = useRef<THREE.DirectionalLight>(null);
 	const pointLight1Ref = useRef<THREE.PointLight>(null);
 	const pointLight2Ref = useRef<THREE.PointLight>(null);
 
 	useFrame((state) => {
-		// Match the star rotation duration (52s) - same as in Hero.tsx
-		const rotationSpeed = (2 * Math.PI) / (52 * 60); // 52 seconds in frames (60fps)
-		const time = state.clock.elapsedTime * rotationSpeed;
+		// Base auto-rotation (52s cycle) to match star orbits
+		const baseRotationSpeed = (2 * Math.PI) / (52 * 60);
+		const baseTime = state.clock.elapsedTime * baseRotationSpeed;
+		
+		// Camera direction for instant responsiveness (ChatGPT's key insight)
+		const cameraDirection = state.camera.position.clone().normalize();
+		
+		// Auto-rotation direction
+		const autoDirection = new THREE.Vector3(
+			Math.cos(baseTime),
+			0.15,
+			Math.sin(baseTime)
+		).normalize();
+		
+		// Blend: 80% camera responsive + 20% auto-rotation
+		const finalDirection = cameraDirection.clone()
+			.multiplyScalar(0.8)
+			.add(autoDirection.multiplyScalar(0.2))
+			.normalize();
 
-		// Rotate main directional light around the globe
+		// Position main sun light
 		if (directionalLightRef.current) {
-			const radius = 8;
-			directionalLightRef.current.position.set(
-				Math.cos(time) * radius,
-				5,
-				Math.sin(time) * radius
-			);
-			// Make light always point toward the globe center
+			const lightPosition = finalDirection.clone().multiplyScalar(15);
+			directionalLightRef.current.position.copy(lightPosition);
 			directionalLightRef.current.lookAt(0, 0, 0);
 		}
 
-		// Rotate accent lights in opposite direction for dynamic shadows
+		// Opposite side rim light
 		if (pointLight1Ref.current) {
-			const radius1 = 6;
-			pointLight1Ref.current.position.set(
-				Math.cos(-time + Math.PI/3) * radius1,
-				4,
-				Math.sin(-time + Math.PI/3) * radius1
-			);
+			const oppositePos = finalDirection.clone().negate().multiplyScalar(12);
+			pointLight1Ref.current.position.copy(oppositePos);
 		}
 
+		// Side accent light  
 		if (pointLight2Ref.current) {
-			const radius2 = 7;
-			pointLight2Ref.current.position.set(
-				Math.cos(time + Math.PI) * radius2,
-				-3,
-				Math.sin(time + Math.PI) * radius2
-			);
+			const sidePos = new THREE.Vector3(-finalDirection.z, 0, finalDirection.x)
+				.normalize().multiplyScalar(10);
+			pointLight2Ref.current.position.copy(sidePos);
 		}
 	});
 
 	return (
 		<>
-			{/* Base ambient light */}
-			<ambientLight intensity={0.4} />
+			{/* DRAMATIC DAY/NIGHT TERMINATOR EFFECT */}
+			{/* Very low ambient for deep shadows */}
+			<ambientLight intensity={0.08} color="#0f0f1a" />
 			
-			{/* Main rotating directional light - creates primary shadows */}
+			{/* Balanced directional light for sharp terminator */}
 			<directionalLight 
 				ref={directionalLightRef}
-				intensity={1.0}
-				color="#ffffff"
+				intensity={1.8}
+				color="#fff5d6"
 				castShadow
-				shadow-mapSize-width={2048}
-				shadow-mapSize-height={2048}
+				shadow-mapSize-width={4096}
+				shadow-mapSize-height={4096}
+				shadow-camera-near={0.1}
+				shadow-camera-far={50}
+				shadow-camera-left={-12}
+				shadow-camera-right={12}
+				shadow-camera-top={12}
+				shadow-camera-bottom={-12}
+				shadow-bias={-0.0005}
 			/>
 			
-			{/* Rotating accent lights for depth */}
+			{/* Subtle night-side lighting for earth details */}
 			<pointLight 
 				ref={pointLight1Ref}
-				intensity={0.3} 
-				color="#87ceeb"  
+				intensity={0.06} 
+				color="#2a4d8a"  
 			/>
 			<pointLight 
 				ref={pointLight2Ref}
-				intensity={0.2} 
-				color="#fff8dc"
+				intensity={0.04} 
+				color="#1a2857"
 			/>
 		</>
 	);
 }
 
-function EarthModel({ onLoaded }: { onLoaded: () => void }) {
-	const groupRef = useRef<THREE.Group>(null);
-
+function EarthModel({ onLoaded, globeRef }: { onLoaded: () => void; globeRef: React.RefObject<THREE.Group> }) {
 	// Load model + texture
 	const fbx = useFBX("/models/low-poly-planet-earth/source/Planet.fbx");
 	const texture = useLoader(
@@ -96,7 +108,7 @@ function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 		texture.minFilter = THREE.LinearMipmapLinearFilter;
 		texture.magFilter = THREE.LinearFilter;
 
-		// Apply texture & color boost
+		// Apply texture & enhanced colors without whitewashing
 		clonedScene.traverse((child) => {
 			if (child instanceof THREE.Mesh && child.material) {
 				child.frustumCulled = true;
@@ -104,10 +116,10 @@ function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 
 				const mat = child.material as THREE.MeshStandardMaterial;
 				mat.map = texture;
-				mat.color = new THREE.Color(0.9, 1.8, 3.2); // dark blue seas with deep greens
-				mat.metalness = 0.2; // reduce metallic to preserve colors
-				mat.roughness = 0.5; // slightly more rough to hold texture colors
-				mat.emissive = new THREE.Color(0.05, 0.08, 0.1); // reduce emissive glow
+				mat.color = new THREE.Color(0.95, 1.4, 1.6); // Deep blues/greens without oversaturation
+				mat.metalness = 0.1; // Lower metalness for better color retention
+				mat.roughness = 0.8; // Higher roughness for natural earth surface
+				mat.emissive = new THREE.Color(0.02, 0.03, 0.05); // Minimal emissive to preserve shadows
 				mat.emissiveIntensity = 0.05;
 				mat.needsUpdate = true;
 			}
@@ -119,16 +131,16 @@ function EarthModel({ onLoaded }: { onLoaded: () => void }) {
 		clonedScene.position.sub(center);
 
 		// Set consistent initial rotation for reproducible loading
-		if (groupRef.current) {
-			groupRef.current.rotation.set(0, 0, 0);
+		if (globeRef.current) {
+			globeRef.current.rotation.set(0, 0, 0);
 		}
 
 		// Signal that the globe is loaded
 		onLoaded();
-	}, [clonedScene, texture, onLoaded]);
+	}, [clonedScene, texture, onLoaded, globeRef]);
 
 	return (
-		<group ref={groupRef} scale={1.4} position={[0, 0, 0]}>
+		<group ref={globeRef} scale={1.4} position={[0, 0, 0]}>
 			<primitive object={clonedScene} />
 		</group>
 	);
@@ -149,8 +161,8 @@ export default function Globe({
 	onGlobeLoaded?: () => void;
 }) {
 	const [mounted, setMounted] = useState(false);
-	const [globeLoaded, setGlobeLoaded] = useState(false);
 	const controlsRef = useRef<OrbitControlsImpl>(null);
+	const globeGroupRef = useRef<THREE.Group>(null);
 
 	useEffect(() => {
 		setMounted(true);
@@ -193,13 +205,13 @@ export default function Globe({
 				performance={{ min: 0.8 }}
 				dpr={[1, 1.5]}
 			>
-				{/* rotating lighting system */}
-				<RotatingLights />
+				{/* responsive lighting system */}
+				<ResponsiveLights />
 
 				{/* our Earth */}
 				<EarthModel
+					globeRef={globeGroupRef}
 					onLoaded={() => {
-						setGlobeLoaded(true);
 						onGlobeLoaded?.();
 					}}
 				/>
