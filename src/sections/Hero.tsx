@@ -35,8 +35,8 @@ export const HeroSection = () => {
 					}}
 				/>
 				<div className="absolute inset-0 bg-black/60" />
-				{/* Gradient blend to rest of website */}
-				<div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-black" />
+				{/* Gradient blend to rest of website - sharp transition */}
+				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-10" />
 				<div className="container mx-auto relative">
 					{/* BACKGROUND */}
 					<div className="absolute inset-0 pointer-events-none z-0">
