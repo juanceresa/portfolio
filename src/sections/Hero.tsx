@@ -23,7 +23,7 @@ export const HeroSection = () => {
 	return (
 		<>
 			{!globeLoaded && <LoadingScreen />}
-			<div className="relative py-32 md:py-48 lg:py-60 overflow-hidden">
+			<div className="relative py-40 md:py-56 lg:py-72 overflow-hidden">
 				{/* Space background with opacity overlay */}
 				<div
 					className="absolute inset-0"
@@ -37,7 +37,7 @@ export const HeroSection = () => {
 				<div className="absolute inset-0 bg-black/60" />
 				{/* Gradient blend to rest of website - sharp transition */}
 				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-10" />
-				
+
 				{/* AVAILABILITY BADGE - Top Left of entire screen */}
 				<div className="fixed top-4 left-4 z-30">
 					<div className="bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-2 rounded-lg pointer-events-auto">
@@ -50,7 +50,7 @@ export const HeroSection = () => {
 						</span>
 					</div>
 				</div>
-				
+
 				<div className="container mx-auto relative">
 					{/* BACKGROUND */}
 					<div className="absolute inset-0 pointer-events-none z-0">
@@ -150,40 +150,40 @@ export const HeroSection = () => {
 							<div className="size-2 rounded-full bg-indigo-400/80 shadow-[0_0_6px_rgba(129,140,248,0.5)]" />
 						</HeroOrbit>
 
-						{/* centered globe */}
+						{/* centered globe - expanded for better touch */}
 						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto">
-							<div className="w-[700px] h-[700px]">
+							<div className="w-[700px] h-[700px] pointer-events-auto">
 								<Globe onGlobeLoaded={handleGlobeLoaded} />
 							</div>
 						</div>
 					</div>
 
-					{/* FOREGROUND CONTENT */}
-					<div className="relative z-10 flex flex-col items-center text-center pointer-events-none">
-						<Image
+					{/* FOREGROUND CONTENT - Far Left */}
+					<div className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-sm">
+						{/* <Image
 							src={memojiImage}
 							alt="person behind laptop"
 							className="w-[100px] h-[100px]"
-						/>
+						/> */}
 
 						<h1 className="mt-8 font-serif text-3xl md:text-5xl tracking-wide">
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
-						<p className="mt-4 text-white/60 md:text-lg max-w-lg">
+						<p className="mt-4 text-white/60 md:text-lg max-w-xs">
 							I am a passionate developer dedicated to crafting seamless and
 							engaging digital experiences.
 						</p>
-					</div>
-				</div>
-				<div className="container mx-auto relative">
-					<div className="mt-20 flex flex-col md:flex-row justify-center items-center gap-4 pointer-events-auto">
-						<a href="#about">
-							<MagicButton
-								title="Show my work"
-								icon={<FaLocationArrow />}
-								position="right"
-							/>
-						</a>
+
+						{/* BUTTON - Below description */}
+						<div className="mt-8">
+							<a href="#about">
+								<MagicButton
+									title="Show my work"
+									icon={<FaLocationArrow />}
+									position="right"
+								/>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

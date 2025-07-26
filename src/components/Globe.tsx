@@ -243,7 +243,7 @@ export default function Globe({
 					enableDamping
 					dampingFactor={0.02} // very low damping = much more momentum
 					autoRotate // gentle auto‑spin when idle
-					autoRotateSpeed={0.9} // faster auto‑rotate rate
+					autoRotateSpeed={1.5} // faster auto‑rotate rate
 					maxPolarAngle={Math.PI * 0.8}
 					minPolarAngle={Math.PI * 0.2}
 					target={[0, -0.5, 0]} // consistent target - slightly lower to center globe
