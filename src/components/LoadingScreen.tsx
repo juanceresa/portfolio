@@ -12,7 +12,7 @@ export default function LoadingScreen() {
 
 				{/* Loading text */}
 				<div className="text-white/60 text-sm font-medium">
-					Loading 3D Globe...
+					Loading...(HINT! : Try the globe)
 				</div>
 			</div>
 		</div>

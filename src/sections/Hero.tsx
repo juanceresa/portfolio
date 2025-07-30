@@ -23,15 +23,15 @@ export const HeroSection = () => {
 	return (
 		<>
 			{!globeLoaded && <LoadingScreen />}
-			<div className="relative py-40 md:py-56 lg:py-72 overflow-hidden">
+			<div className="relative py-40 md:py-56 lg:py-96 overflow-hidden">
 				{/* Space background with opacity overlay */}
 				<div
 					className="absolute inset-0"
 					style={{
 						backgroundImage: `url(${spaceImage.src})`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat'
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+						backgroundRepeat: "no-repeat",
 					}}
 				/>
 				<div className="absolute inset-0 bg-black/60" />
