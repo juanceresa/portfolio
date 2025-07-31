@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Typed from "typed.js";
 
 // Import scrapbook images
 import family from "@/assets/images/family.png";
@@ -67,7 +68,12 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [isTextFading, setIsTextFading] = useState(false);
 	const [hasBeenClicked, setHasBeenClicked] = useState(false);
 	const [isPaused, setIsPaused] = useState(false);
+	const [showIntro, setShowIntro] = useState(true);
+	const [introComplete, setIntroComplete] = useState(false);
+	const [isFirstVisit, setIsFirstVisit] = useState(true);
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
+	const typedRef = useRef<HTMLSpanElement>(null);
+	const typedInstance = useRef<Typed | null>(null);
 
 	// Create infinite scroll by duplicating images
 	const infiniteImages = [...scrapbookImages, ...scrapbookImages];
@@ -96,25 +102,31 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		const nextIndex = currentIndex + 1;
 
 		if (nextIndex >= scrapbookImages.length) {
-			// Moving from last to first - fade out text first
+			// Moving from last to first - immediately show intro without flash
 			setIsTextFading(true);
 
-			// Wait a moment for text to fade, then start slide
-			setTimeout(() => {
-				setTranslateX(-(nextIndex * 100));
-				setCurrentIndex(nextIndex);
+			// Start slide transition
+			setTranslateX(-(nextIndex * 100));
+			setCurrentIndex(nextIndex);
 
-				// After slide completes, snap back and fade text back in
-				setTimeout(() => {
-					setIsTransitioning(false);
-					setTranslateX(0);
-					setCurrentIndex(0);
-					// Fade text back in
-					setTimeout(() => {
-						setIsTextFading(false);
-					}, 150);
-				}, 350);
-			}, 200);
+			// After slide animation, snap back and immediately show intro
+			setTimeout(() => {
+				setIsTransitioning(false);
+				setTranslateX(0);
+				setCurrentIndex(0);
+				
+				// Immediately show intro - no delay
+				setShowIntro(true);
+				setIntroComplete(false);
+				// Mark as replay for subsequent visits
+				setIsFirstVisit(false);
+				// Destroy existing typed instance so it can be recreated
+				if (typedInstance.current) {
+					typedInstance.current.destroy();
+					typedInstance.current = null;
+				}
+				setIsTextFading(false);
+			}, 350);
 		} else {
 			// Check if transitioning from first slide (title) to second slide (caption)
 			if (currentIndex === 0) {
@@ -142,10 +154,57 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		}
 	};
 
+	// Initialize TypedJS intro animation
 	useEffect(() => {
-		startAutoRotate();
+		if (showIntro && typedRef.current && !typedInstance.current) {
+			// Different animations for first visit vs replays
+			const firstVisitStrings = [
+				"Welcome to my Portfolio^1000",
+				"Welcome to my Portfolio^500... opening scrapbook^800",
+				"Welcome to my Portfolio^500... opening scrapbook^500 $ ./scrapbook --interactive^1000"
+			];
+			
+			const replayStrings = [
+				"⚠️ scrapbook.exe: Sentiment overflow detected.^1000",
+				"↻ Rebooting slideshow...^1000"
+			];
+
+			typedInstance.current = new Typed(typedRef.current, {
+				strings: isFirstVisit ? firstVisitStrings : replayStrings,
+				typeSpeed: 50,
+				backSpeed: 30,
+				backDelay: 500,
+				startDelay: 300,
+				loop: false,
+				showCursor: true,
+				cursorChar: "_",
+				onComplete: () => {
+					// Wait a moment then fade out intro
+					setTimeout(() => {
+						setIntroComplete(true);
+						// Start fade out after brief pause
+						setTimeout(() => {
+							setShowIntro(false);
+						}, 1000);
+					}, 800);
+				}
+			});
+		}
+
+		return () => {
+			if (typedInstance.current) {
+				typedInstance.current.destroy();
+				typedInstance.current = null;
+			}
+		};
+	}, [showIntro]);
+
+	useEffect(() => {
+		if (!showIntro) {
+			startAutoRotate();
+		}
 		return () => stopAutoRotate();
-	}, [isPaused, isTransitioning]);
+	}, [isPaused, isTransitioning, showIntro]);
 
 	const handleCardClick = () => {
 		if (!hasBeenClicked) {
@@ -164,10 +223,22 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	return (
 		<div
 			className={`relative cursor-pointer group overflow-hidden ${className}`}
-			onClick={handleCardClick}
-			onMouseEnter={() => setIsPaused(true)}
-			onMouseLeave={() => setIsPaused(false)}
+			onClick={!showIntro ? handleCardClick : undefined}
+			onMouseEnter={() => !showIntro && setIsPaused(true)}
+			onMouseLeave={() => !showIntro && setIsPaused(false)}
 		>
+			{/* Intro Terminal Screen */}
+			{showIntro && (
+				<div 
+					className={`absolute inset-0 z-50 bg-black flex items-center justify-center transition-opacity duration-1000 ${
+						introComplete ? 'opacity-0' : 'opacity-100'
+					}`}
+				>
+					<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
+						<span ref={typedRef}></span>
+					</div>
+				</div>
+			)}
 			{/* Sliding carousel container */}
 			<div className="absolute inset-0 overflow-hidden">
 				<div
@@ -198,8 +269,8 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			{/* Dark overlay for better text readability */}
 			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
 
-			{/* Top title for headshot only */}
-			{currentImage.title && (
+			{/* Top title for headshot only - hidden since intro covers this */}
+			{currentImage.title && false && (
 				<div className={`absolute top-2 left-6 right-6 z-10 flex justify-center transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-90 group-hover:opacity-100'}`}>
 					<h2 className="text-white text-2xl font-serif font-semibold drop-shadow-lg opacity-100">
 						{currentImage.title}
