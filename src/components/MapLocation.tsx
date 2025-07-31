@@ -91,7 +91,7 @@ const BentoItemMapLocation = ({ className }: Props) => {
 		<div className="group h-full">
 			<MapContainer
 				ref={mapRef}
-				zoom={10}
+				zoom={11}
 				center={[LATITUDE, LONGITUDE]}
 				dragging={false}
 				touchZoom={true} // Enables pinch-to-zoom on touch devices
@@ -128,7 +128,7 @@ const BentoItemMapLocation = ({ className }: Props) => {
 					className="relative size-20 transition-transform duration-300 ease-out"
 					style={{ transform: `scale(${scaleFactor})` }}
 				>
-					<div className="absolute size-full animate-ping rounded-full bg-emerald-300/20 opacity-65 blur-sm"></div>
+					<div className="absolute inset-0 rounded-full bg-gradient-to-t from-emerald-300 to-sky-400 -z-20 animate-ping [animation-duration:2s]"></div>
 					<div className="relative size-full rounded-full overflow-hidden bg-emerald-400/20 backdrop-blur-sm border-2 border-emerald-300/30">
 						<Image
 							src={memojiSmile}
