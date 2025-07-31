@@ -21,7 +21,8 @@ const scrapbookImages = [
 	{
 		src: headshot,
 		alt: "Juan Ceresa",
-		caption: "Welcome to my portfolio!",
+		title: "Welcome to my Portfolio",
+		caption: "Tap to learn more about me",
 		cropClass: "object-[center_20%]",
 	},
 	{
@@ -32,13 +33,13 @@ const scrapbookImages = [
 	{
 		src: family,
 		alt: "Family",
-		caption: "Senior Day, a favorite moment of mine",
+		caption: "Senior Day, mission complete",
 		cropClass: "object-center scale-110",
 	},
 	{
 		src: granada,
 		alt: "Granada",
-		caption: "Ask me about my study abroad!",
+		caption: "Then I went abroad, ask me about it!",
 		location: "Granada, Spain",
 	},
 	{
@@ -50,8 +51,8 @@ const scrapbookImages = [
 	{
 		src: football,
 		alt: "Go Blue",
-		caption: "Lover of Football (Big Ten Champs!)",
-		location: "The Big House"
+		caption: "Lover of Football (Big Ten Champs '20!)",
+		location: "The Big House",
 	},
 ];
 
@@ -159,7 +160,6 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 								className={`object-cover ${image.cropClass || ""}`}
 								sizes="(max-width: 768px) 100vw, 50vw"
 							/>
-
 						</div>
 					))}
 				</div>
@@ -168,14 +168,25 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			{/* Dark overlay for better text readability */}
 			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
 
+			{/* Top title for headshot only */}
+			{currentImage.title && (
+				<div className="absolute top-2 left-5 z-10 flex justify-center transition-opacity duration-300 opacity-90 group-hover:opacity-100">
+					<h2 className="text-white text-2xl font-serif font-semibold drop-shadow-lg opacity-100">
+						{currentImage.title}
+					</h2>
+				</div>
+			)}
+
 			{/* Content overlay */}
 			<div className="relative z-10 h-full flex flex-col justify-end p-6">
 				{/* Bottom content */}
 				<div className="space-y-4">
 					{/* Caption - subtle by default, more visible on hover */}
-					<p className="text-white font-medium drop-shadow-lg transition-opacity duration-300 opacity-20 group-hover:opacity-100">
-						{currentImage.caption}
-					</p>
+					{currentImage.caption && (
+						<p className="text-white font-medium drop-shadow-lg transition-opacity duration-300 opacity-20 group-hover:opacity-100">
+							{currentImage.caption}
+						</p>
+					)}
 
 					{/* Bottom row with dots left, location pin right */}
 					<div className="flex items-center justify-between h-[28px]">
@@ -205,7 +216,9 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 									>
 										<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
 									</svg>
-									<span className="drop-shadow-lg">{currentImage.location}</span>
+									<span className="drop-shadow-lg">
+										{currentImage.location}
+									</span>
 								</div>
 							)}
 						</div>
