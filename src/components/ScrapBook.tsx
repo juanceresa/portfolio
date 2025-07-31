@@ -9,6 +9,7 @@ import headshot from "@/assets/images/Headshot.jpg";
 import granada from "@/assets/images/fa92427f-ab81-42d9-8752-1245030905ef.jpg";
 import swim from "@/assets/images/swim.JPG";
 import hiking from "@/assets/images/IMG_6984.png";
+import football from "@/assets/images/IMG_5002.jpg";
 import memojiAvatar5 from "@/assets/images/memoji-avatar-5.png";
 import memojiComputer from "@/assets/images/memoji-computer.png";
 import memojiSmile from "@/assets/images/memoji-smile.png";
@@ -26,12 +27,12 @@ const scrapbookImages = [
 	{
 		src: swim,
 		alt: "NCAA Division 1 Swimmer",
-		caption: "Completed my lifelong dream of swimming for U-M",
+		caption: "Lifelong dream of swimming for U-M",
 	},
 	{
 		src: family,
 		alt: "Family",
-		caption: "Senior Day, one of my proudest moments",
+		caption: "Senior Day, a favorite moment of mine",
 		cropClass: "object-center scale-110",
 	},
 	{
@@ -47,9 +48,10 @@ const scrapbookImages = [
 		location: "Tenerife, Canary Islands",
 	},
 	{
-		src: lightSaas,
-		alt: "Light SaaS Landing Page",
-		caption: "Light theme SaaS",
+		src: football,
+		alt: "Go Blue",
+		caption: "Lover of Football (Big Ten Champs!)",
+		location: "The Big House"
 	},
 ];
 
@@ -190,7 +192,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 								/>
 							))}
 						</div>
-						
+
 						{/* Location Pin - right side (or empty space) */}
 						<div className="min-w-0">
 							{currentImage.location && (
