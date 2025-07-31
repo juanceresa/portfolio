@@ -4,10 +4,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 // Import scrapbook images
-import memojiAvatar1 from "@/assets/images/memoji-avatar-1.png";
-import memojiAvatar2 from "@/assets/images/memoji-avatar-2.png";
-import memojiAvatar3 from "@/assets/images/memoji-avatar-3.png";
-import memojiAvatar4 from "@/assets/images/memoji-avatar-4.png";
+import family from "@/assets/images/family.png";
+import headshot from "@/assets/images/Headshot.jpg";
+import granada from "@/assets/images/fa92427f-ab81-42d9-8752-1245030905ef.jpg";
+import swim from "@/assets/images/swim.JPG";
 import memojiAvatar5 from "@/assets/images/memoji-avatar-5.png";
 import memojiComputer from "@/assets/images/memoji-computer.png";
 import memojiSmile from "@/assets/images/memoji-smile.png";
@@ -17,19 +17,26 @@ import lightSaas from "@/assets/images/light-saas-landing-page.png";
 
 const scrapbookImages = [
 	{
-		src: memojiComputer,
-		alt: "Working on computer",
-		caption: "Coding late nights",
+		src: headshot,
+		alt: "Juan Ceresa",
+		caption: "Welcome to my portfolio!",
+		cropClass: "object-[center_20%]",
 	},
 	{
-		src: memojiSmile,
-		alt: "Happy memoji",
-		caption: "Good vibes only",
+		src: swim,
+		alt: "NCAA Division 1 Swimmer",
+		caption: "Completed my lifelong dream of swimming for U-M",
 	},
 	{
-		src: aiStartup,
-		alt: "AI Startup Landing Page",
-		caption: "AI startup project",
+		src: family,
+		alt: "Family",
+		caption: "Senior Day, one of my proudest moments",
+		cropClass: "object-center scale-110",
+	},
+	{
+		src: granada,
+		alt: "Granada",
+		caption: "Ask me about my study abroad in Granada, Spain!",
 	},
 	{
 		src: darkSaas,
@@ -40,21 +47,6 @@ const scrapbookImages = [
 		src: lightSaas,
 		alt: "Light SaaS Landing Page",
 		caption: "Light theme SaaS",
-	},
-	{
-		src: memojiAvatar1,
-		alt: "Memoji avatar 1",
-		caption: "Different moods",
-	},
-	{
-		src: memojiAvatar2,
-		alt: "Memoji avatar 2",
-		caption: "Always creative",
-	},
-	{
-		src: memojiAvatar3,
-		alt: "Memoji avatar 3",
-		caption: "Problem solving",
 	},
 ];
 
@@ -78,9 +70,9 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				setTimeout(() => {
 					setCurrentIndex((prev) => (prev + 1) % scrapbookImages.length);
 					setIsTransitioning(false);
-				}, 200);
+				}, 400);
 			}
-		}, 4000); // Auto-rotate every 4 seconds
+		}, 8000); // Auto-rotate every 8 seconds
 	};
 
 	const stopAutoRotate = () => {
@@ -104,7 +96,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 		// Pause auto-rotation temporarily when user clicks
 		setIsPaused(true);
-		setTimeout(() => setIsPaused(false), 8000); // Resume after 8 seconds
+		setTimeout(() => setIsPaused(false), 12000); // Resume after 12 seconds
 
 		setIsTransitioning(true);
 		setTimeout(() => {
@@ -128,9 +120,15 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 					src={currentImage.src}
 					alt={currentImage.alt}
 					fill
-					className={`object-cover w-full h-full transition-all duration-500 ${
-						isTransitioning ? "opacity-0 scale-110" : "opacity-100 scale-100"
-					} group-hover:scale-105`}
+					className={`object-cover w-full h-full ${
+						currentImage.alt === "Juan Ceresa"
+							? `${currentImage.cropClass || ""}`
+							: `transition-all duration-700 ${
+									isTransitioning
+										? "opacity-0 scale-110"
+										: "opacity-100 scale-100"
+							  } group-hover:scale-105 ${currentImage.cropClass || ""}`
+					}`}
 					sizes="(max-width: 768px) 100vw, 50vw"
 				/>
 			</div>
@@ -139,21 +137,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
 
 			{/* Content overlay */}
-			<div className="relative z-10 h-full flex flex-col justify-between p-6">
-				{/* Title at top - clearly visible initially, then fades out after first click */}
-				<div
-					className={`transition-opacity duration-500 ${
-						hasBeenClicked ? "opacity-0 pointer-events-none" : "opacity-100"
-					}`}
-				>
-					<h3 className="text-2xl font-serif font-semibold text-white drop-shadow-lg">
-						Scrap Book
-					</h3>
-					<p className="text-white/80 text-sm mt-1 drop-shadow">
-						Click to explore
-					</p>
-				</div>
-
+			<div className="relative z-10 h-full flex flex-col justify-end p-6">
 				{/* Bottom content */}
 				<div className="space-y-4">
 					{/* Caption - subtle by default, more visible on hover */}
