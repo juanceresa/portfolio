@@ -14,16 +14,19 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { useState } from "react";
 
 export const HeroSection = () => {
-	const [globeLoaded, setGlobeLoaded] = useState(false);
+	const [globeReady, setGlobeReady] = useState(false);
 
 	const handleGlobeLoaded = () => {
-		setGlobeLoaded(true);
+		// Add delay to ensure OrbitControls are properly positioned before showing
+		setTimeout(() => {
+			setGlobeReady(true);
+		}, 150);
 	};
 
 	return (
 		<>
-			{!globeLoaded && <LoadingScreen />}
-			<div className="relative py-40 md:py-56 lg:py-96 overflow-hidden">
+			{!globeReady && <LoadingScreen />}
+			<div className={`relative py-40 md:py-56 lg:py-96 overflow-hidden transition-opacity duration-500 ${globeReady ? 'opacity-100' : 'opacity-0'}`}>
 				{/* Space background with opacity overlay */}
 				<div
 					className="absolute inset-0"
