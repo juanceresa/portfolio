@@ -123,7 +123,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			setTranslateX(-(nextIndex * 100));
 			setCurrentIndex(nextIndex);
 
-			// After slide animation, snap back 
+			// After slide animation, snap back
 			setTimeout(() => {
 				setIsTransitioning(false);
 				setTranslateX(0);
@@ -191,20 +191,20 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			const firstVisitStrings = [
 				"Welcome to my Portfolio^1000",
 				"Welcome to my Portfolio^500... opening scrapbook^800",
-				"Welcome to my Portfolio^500... opening scrapbook^500 $ ./scrapbook --interactive^1000"
+				"$ ./scrapbook --interactive^1000",
 			];
-			
+
 			const replayStrings = [
-				"⚠️ scrapbook.exe: Sentiment overflow detected.^1000",
-				"↻ Rebooting slideshow...^1000"
+				"⚠️ scrapbook.exe: Memory overflow detected.^1000",
+				"↻ Rebooting slideshow...^1000",
 			];
 
 			typedInstance.current = new Typed(typedRef.current, {
 				strings: isFirstVisit ? firstVisitStrings : replayStrings,
-				typeSpeed: 50,
-				backSpeed: 30,
-				backDelay: 500,
-				startDelay: 300,
+				typeSpeed: 25,
+				backSpeed: 25,
+				backDelay: 200,
+				startDelay: 125,
 				loop: false,
 				showCursor: true,
 				cursorChar: "_",
@@ -220,7 +220,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 							setTranslateX(0);
 						}, 1000);
 					}, 800);
-				}
+				},
 			});
 		}
 
@@ -272,9 +272,9 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Intro Terminal Screen */}
 			{showIntro && (
-				<div 
+				<div
 					className={`absolute inset-0 z-[60] bg-black flex items-center justify-center transition-opacity duration-1000 ${
-						introComplete ? 'opacity-0' : 'opacity-100'
+						introComplete ? "opacity-0" : "opacity-100"
 					}`}
 				>
 					<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
@@ -284,42 +284,50 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			)}
 			{/* Sliding carousel container */}
 			<div className="absolute inset-0 overflow-hidden">
-					<div
-						className={`flex h-full ${
-							isTransitioning
-								? "transition-transform duration-500 ease-in-out"
-								: ""
-						}`}
-						style={{ transform: `translateX(${translateX}%)` }}
-					>
-						{infiniteImages.map((image, index) => (
-							<div
-								key={`${index}-${image.alt}`}
-								className="w-full h-full flex-shrink-0 relative overflow-hidden"
-							>
-								<Image
-									src={image.src}
-									alt={image.alt}
-									fill
-									className={`object-cover ${image.cropClass || ""}`}
-									sizes="(max-width: 768px) 100vw, 50vw"
-								/>
-							</div>
-						))}
+				<div
+					className={`flex h-full ${
+						isTransitioning
+							? "transition-transform duration-500 ease-in-out"
+							: ""
+					}`}
+					style={{ transform: `translateX(${translateX}%)` }}
+				>
+					{infiniteImages.map((image, index) => (
+						<div
+							key={`${index}-${image.alt}`}
+							className="w-full h-full flex-shrink-0 relative overflow-hidden"
+						>
+							<Image
+								src={image.src}
+								alt={image.alt}
+								fill
+								className={`object-cover ${image.cropClass || ""}`}
+								sizes="(max-width: 768px) 100vw, 50vw"
+							/>
+						</div>
+					))}
 				</div>
 			</div>
 
 			{/* Fade overlay for smooth intro transitions */}
-			<div className={`absolute inset-0 z-[55] bg-black transition-opacity duration-500 ${
-				showIntro && !introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'
-			}`} />
+			<div
+				className={`absolute inset-0 z-[55] bg-black transition-opacity duration-500 ${
+					showIntro && !introComplete
+						? "opacity-100"
+						: "opacity-0 pointer-events-none"
+				}`}
+			/>
 
 			{/* Dark overlay for better text readability */}
 			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
 
 			{/* Top title for headshot only - hidden since intro covers this */}
 			{currentImage.title && false && (
-				<div className={`absolute top-2 left-6 right-6 z-10 flex justify-center transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-90 group-hover:opacity-100'}`}>
+				<div
+					className={`absolute top-2 left-6 right-6 z-10 flex justify-center transition-opacity duration-300 ${
+						isTextFading ? "opacity-0" : "opacity-90 group-hover:opacity-100"
+					}`}
+				>
 					<h2 className="text-white text-2xl font-serif font-semibold drop-shadow-lg opacity-100">
 						{currentImage.title}
 					</h2>
@@ -332,7 +340,13 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				<div className="space-y-4">
 					{/* Caption - subtle by default, more visible on hover */}
 					{currentImage.caption && (
-						<p className={`text-white font-medium drop-shadow-lg transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-20 group-hover:opacity-100'}`}>
+						<p
+							className={`text-white font-medium drop-shadow-lg transition-opacity duration-300 ${
+								isTextFading
+									? "opacity-0"
+									: "opacity-20 group-hover:opacity-100"
+							}`}
+						>
 							{currentImage.caption}
 						</p>
 					)}
