@@ -37,14 +37,14 @@ const scrapbookImages = [
 	{
 		src: granada,
 		alt: "Granada",
-		caption: "Ask me about my study abroad in Granada, Spain!",
+		caption: "Ask me about my study abroad!",
 		location: "Granada, Spain",
 	},
 	{
 		src: hiking,
 		alt: "Hiking in the Canary Islands",
 		caption: "Lover of the outdoors",
-		location: "Canary Islands",
+		location: "Tenerife, Canary Islands",
 	},
 	{
 		src: lightSaas,
@@ -138,11 +138,18 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			{/* Sliding carousel container */}
 			<div className="absolute inset-0 overflow-hidden">
 				<div
-					className={`flex h-full ${isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
+					className={`flex h-full ${
+						isTransitioning
+							? "transition-transform duration-700 ease-in-out"
+							: ""
+					}`}
 					style={{ transform: `translateX(${translateX}%)` }}
 				>
 					{infiniteImages.map((image, index) => (
-						<div key={`${index}-${image.alt}`} className="w-full h-full flex-shrink-0 relative overflow-hidden">
+						<div
+							key={`${index}-${image.alt}`}
+							className="w-full h-full flex-shrink-0 relative overflow-hidden"
+						>
 							<Image
 								src={image.src}
 								alt={image.alt}
@@ -150,26 +157,23 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 								className={`object-cover ${image.cropClass || ""}`}
 								sizes="(max-width: 768px) 100vw, 50vw"
 							/>
-							
+
 							{/* Location Pin Overlay */}
 							{image.location && (
-								<div className="absolute bottom-8 right-6 z-20">
-									<div className="location-pin flex items-center gap-1.5 bg-black/60 rounded-full px-2.5 py-1.5 text-white text-sm font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+								<div className="absolute bottom-3 right-6 z-20">
+									<div className="location-pin flex items-center gap-1.5 bg-black/60 rounded-full px-2.5 py-1.5 text-white text-sm font-medium opacity-60 hover:opacity-100 transition-opacity duration-300">
 										{/* Pin Icon */}
-										<svg 
-											className="w-3 h-3 text-red-400" 
-											fill="currentColor" 
+										<svg
+											className="w-3 h-3 text-red-400"
+											fill="currentColor"
 											viewBox="0 0 24 24"
 										>
-											<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+											<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
 										</svg>
-										<span className="drop-shadow-lg">
-											{image.location}
-										</span>
+										<span className="drop-shadow-lg">{image.location}</span>
 									</div>
 								</div>
 							)}
-							
 						</div>
 					))}
 				</div>
