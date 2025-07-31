@@ -45,14 +45,16 @@ export async function GET() {
       top_project: thisMonthData.data.projects?.[0] ? {
         name: thisMonthData.data.projects[0].name,
         text: thisMonthData.data.projects[0].text,
-        percent: thisMonthData.data.projects[0].percent,
+        hours: thisMonthData.data.projects[0].hours,
+        minutes: thisMonthData.data.projects[0].minutes,
       } : null,
       
       // Top language this month
       top_language: thisMonthData.data.languages?.[0] ? {
         name: thisMonthData.data.languages[0].name,
         text: thisMonthData.data.languages[0].text,
-        percent: thisMonthData.data.languages[0].percent,
+        hours: thisMonthData.data.languages[0].hours,
+        minutes: thisMonthData.data.languages[0].minutes,
       } : null,
     };
 

@@ -12,13 +12,15 @@ interface WakaTimeBestDay {
 interface WakaTimeLanguage {
 	name: string;
 	text: string;
-	percent: number;
+	hours: number;
+	minutes: number;
 }
 
 interface WakaTimeProject {
 	name: string;
 	text: string;
-	percent: number;
+	hours: number;
+	minutes: number;
 }
 
 interface WakaTimeStats {
@@ -134,7 +136,7 @@ export const WakaTimeStats = () => {
 									{stats.top_language.name}
 								</span>
 								<span className="text-white/60 text-xs">
-									{stats.top_language.percent.toFixed(1)}%
+									{stats.top_language.hours}h {stats.top_language.minutes}m
 								</span>
 							</div>
 						</div>
@@ -153,7 +155,7 @@ export const WakaTimeStats = () => {
 									{stats.top_project.name}
 								</span>
 								<span className="text-white/60 text-xs">
-									{stats.top_project.percent.toFixed(1)}%
+									{stats.top_project.hours}h {stats.top_project.minutes}m
 								</span>
 							</div>
 						</div>

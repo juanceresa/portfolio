@@ -134,7 +134,7 @@ const BentoItemMapLocation = ({ className }: Props) => {
 							src={memojiSmile}
 							alt="Location marker"
 							fill
-							className="object-cover scale-90"
+							className="object-cover scale-75"
 							sizes="80px"
 						/>
 					</div>
