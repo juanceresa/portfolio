@@ -68,12 +68,14 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [isTextFading, setIsTextFading] = useState(false);
 	const [hasBeenClicked, setHasBeenClicked] = useState(false);
 	const [isPaused, setIsPaused] = useState(false);
-	const [showIntro, setShowIntro] = useState(true);
+	const [showIntro, setShowIntro] = useState(false);
 	const [introComplete, setIntroComplete] = useState(false);
 	const [isFirstVisit, setIsFirstVisit] = useState(true);
+	const [hasEnteredView, setHasEnteredView] = useState(false);
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
 	const typedRef = useRef<HTMLSpanElement>(null);
 	const typedInstance = useRef<Typed | null>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	// Create infinite scroll by duplicating images
 	const infiniteImages = [...scrapbookImages, ...scrapbookImages];
@@ -105,26 +107,26 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			// Moving from last to first - immediately show intro without flash
 			setIsTextFading(true);
 
+			// Immediately set intro states before any slide animation
+			setShowIntro(true);
+			setIntroComplete(false);
+			// Mark as replay for subsequent visits
+			setIsFirstVisit(false);
+			// Destroy existing typed instance so it can be recreated
+			if (typedInstance.current) {
+				typedInstance.current.destroy();
+				typedInstance.current = null;
+			}
+
 			// Start slide transition
 			setTranslateX(-(nextIndex * 100));
 			setCurrentIndex(nextIndex);
 
-			// After slide animation, snap back and immediately show intro
+			// After slide animation, snap back 
 			setTimeout(() => {
 				setIsTransitioning(false);
 				setTranslateX(0);
 				setCurrentIndex(0);
-				
-				// Immediately show intro - no delay
-				setShowIntro(true);
-				setIntroComplete(false);
-				// Mark as replay for subsequent visits
-				setIsFirstVisit(false);
-				// Destroy existing typed instance so it can be recreated
-				if (typedInstance.current) {
-					typedInstance.current.destroy();
-					typedInstance.current = null;
-				}
 				setIsTextFading(false);
 			}, 350);
 		} else {
@@ -153,6 +155,32 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			}
 		}
 	};
+
+	// Intersection Observer to detect when ScrapBook enters viewport
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const [entry] = entries;
+				if (entry.isIntersecting && !hasEnteredView && isFirstVisit) {
+					// First time entering view - immediately trigger intro animation
+					setHasEnteredView(true);
+					setShowIntro(true);
+					setIntroComplete(false);
+				}
+			},
+			{ threshold: 0.6 } // Trigger when 60% of component is visible (more centered)
+		);
+
+		if (containerRef.current) {
+			observer.observe(containerRef.current);
+		}
+
+		return () => {
+			if (containerRef.current) {
+				observer.unobserve(containerRef.current);
+			}
+		};
+	}, [hasEnteredView, isFirstVisit]);
 
 	// Initialize TypedJS intro animation
 	useEffect(() => {
@@ -185,6 +213,9 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 						// Start fade out after brief pause
 						setTimeout(() => {
 							setShowIntro(false);
+							// Ensure we're on the first image after intro
+							setCurrentIndex(0);
+							setTranslateX(0);
 						}, 1000);
 					}, 800);
 				}
@@ -222,6 +253,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 	return (
 		<div
+			ref={containerRef}
 			className={`relative cursor-pointer group overflow-hidden ${className}`}
 			onClick={!showIntro ? handleCardClick : undefined}
 			onMouseEnter={() => !showIntro && setIsPaused(true)}
@@ -239,32 +271,34 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 					</div>
 				</div>
 			)}
-			{/* Sliding carousel container */}
-			<div className="absolute inset-0 overflow-hidden">
-				<div
-					className={`flex h-full ${
-						isTransitioning
-							? "transition-transform duration-500 ease-in-out"
-							: ""
-					}`}
-					style={{ transform: `translateX(${translateX}%)` }}
-				>
-					{infiniteImages.map((image, index) => (
-						<div
-							key={`${index}-${image.alt}`}
-							className="w-full h-full flex-shrink-0 relative overflow-hidden"
-						>
-							<Image
-								src={image.src}
-								alt={image.alt}
-								fill
-								className={`object-cover ${image.cropClass || ""}`}
-								sizes="(max-width: 768px) 100vw, 50vw"
-							/>
-						</div>
-					))}
+			{/* Sliding carousel container - hidden during first visit intro */}
+			{!showIntro && (
+				<div className="absolute inset-0 overflow-hidden">
+					<div
+						className={`flex h-full ${
+							isTransitioning
+								? "transition-transform duration-500 ease-in-out"
+								: ""
+						}`}
+						style={{ transform: `translateX(${translateX}%)` }}
+					>
+						{infiniteImages.map((image, index) => (
+							<div
+								key={`${index}-${image.alt}`}
+								className="w-full h-full flex-shrink-0 relative overflow-hidden"
+							>
+								<Image
+									src={image.src}
+									alt={image.alt}
+									fill
+									className={`object-cover ${image.cropClass || ""}`}
+									sizes="(max-width: 768px) 100vw, 50vw"
+								/>
+							</div>
+						))}
 				</div>
 			</div>
+			)}
 
 			{/* Dark overlay for better text readability */}
 			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
