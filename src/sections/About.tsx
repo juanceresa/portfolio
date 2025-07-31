@@ -14,6 +14,7 @@ import { CardHeader } from "@/components/CardHeader";
 import { ToolboxItems } from "@/components/TollboxItems";
 import BentoCard from "@/components/BentoCard";
 import { ScrapBook } from "@/components/ScrapBook";
+import { WakaTimeStats } from "@/components/WakaTimeStats";
 import { useEffect } from "react";
 import { Card } from "@/components/Card";
 
@@ -89,7 +90,7 @@ export const AboutSection = () => {
 
 						<BentoCard className="h-[320px] md:col-span-3 lg:col-span-2">
 							<CardHeader
-								title="My Toolbox"
+								title="My Tech Stack"
 								description="Explore the technologies and tools I use to craft digital
 								experiences."
 								className=""
@@ -113,12 +114,8 @@ export const AboutSection = () => {
 							<BentoItemMapLocation className="rounded-3xl" />
 						</BentoCard>
 
-						<BentoCard className="h-[320px] p-0 md:col-span-2 lg:col-span-1">
-							<CardHeader // PLACEHOLDER -- MAYBE GITHUB STATS CARD
-								title="Beyond the Code"
-								description="Explore my interests, hobbies, and the things that inspire me
-								outside of coding."
-							/>
+						<BentoCard className="h-[320px] md:col-span-2 lg:col-span-1">
+							<WakaTimeStats />
 						</BentoCard>
 					</div>
 				</div>
