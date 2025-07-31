@@ -46,8 +46,12 @@ export const HeroSection = () => {
 				{/* Gradient blend to rest of website - sharp transition */}
 				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-10" />
 
-				{/* AVAILABILITY BADGE - Top Left of entire screen */}
-				<div className="fixed top-4 left-4 z-30">
+				{/* AVAILABILITY BADGE - Top Left of entire screen with animation */}
+				<div className={`fixed top-4 left-4 z-30 transition-all duration-1000 ease-out delay-700 ${
+					textAnimated 
+						? 'translate-y-0 opacity-100' 
+						: '-translate-y-8 opacity-0'
+				}`}>
 					<div className="bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-2 rounded-lg pointer-events-auto">
 						<div className="relative size-3">
 							<div className="absolute size-full animate-ping rounded-full bg-green-300 opacity-65"></div>
