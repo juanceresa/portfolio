@@ -72,6 +72,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [introComplete, setIntroComplete] = useState(false);
 	const [isFirstVisit, setIsFirstVisit] = useState(true);
 	const [hasEnteredView, setHasEnteredView] = useState(false);
+	const [showBlankTerminal, setShowBlankTerminal] = useState(true);
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
 	const typedRef = useRef<HTMLSpanElement>(null);
 	const typedInstance = useRef<Typed | null>(null);
@@ -162,8 +163,9 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			(entries) => {
 				const [entry] = entries;
 				if (entry.isIntersecting && !hasEnteredView && isFirstVisit) {
-					// First time entering view - immediately trigger intro animation
+					// First time entering view - hide blank terminal and trigger intro animation
 					setHasEnteredView(true);
+					setShowBlankTerminal(false);
 					setShowIntro(true);
 					setIntroComplete(false);
 				}
@@ -259,10 +261,19 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			onMouseEnter={() => !showIntro && setIsPaused(true)}
 			onMouseLeave={() => !showIntro && setIsPaused(false)}
 		>
+			{/* Blank Terminal Screen - shown before scroll trigger */}
+			{showBlankTerminal && (
+				<div className="absolute inset-0 z-[60] bg-black flex items-center justify-center">
+					<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
+						<span className="animate-pulse">_</span>
+					</div>
+				</div>
+			)}
+
 			{/* Intro Terminal Screen */}
 			{showIntro && (
 				<div 
-					className={`absolute inset-0 z-50 bg-black flex items-center justify-center transition-opacity duration-1000 ${
+					className={`absolute inset-0 z-[60] bg-black flex items-center justify-center transition-opacity duration-1000 ${
 						introComplete ? 'opacity-0' : 'opacity-100'
 					}`}
 				>
@@ -271,9 +282,8 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 					</div>
 				</div>
 			)}
-			{/* Sliding carousel container - hidden during first visit intro */}
-			{!showIntro && (
-				<div className="absolute inset-0 overflow-hidden">
+			{/* Sliding carousel container */}
+			<div className="absolute inset-0 overflow-hidden">
 					<div
 						className={`flex h-full ${
 							isTransitioning
@@ -298,7 +308,11 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 						))}
 				</div>
 			</div>
-			)}
+
+			{/* Fade overlay for smooth intro transitions */}
+			<div className={`absolute inset-0 z-[55] bg-black transition-opacity duration-500 ${
+				showIntro && !introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'
+			}`} />
 
 			{/* Dark overlay for better text readability */}
 			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
