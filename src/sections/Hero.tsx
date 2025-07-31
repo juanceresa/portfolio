@@ -31,7 +31,11 @@ export const HeroSection = () => {
 	return (
 		<>
 			{!globeReady && <LoadingScreen />}
-			<div className={`relative py-40 md:py-56 lg:py-96 overflow-hidden transition-opacity duration-500 ${globeReady ? 'opacity-100' : 'opacity-0'}`}>
+			<div
+				className={`relative py-40 md:py-56 lg:py-96 overflow-hidden transition-opacity duration-500 ${
+					globeReady ? "opacity-100" : "opacity-0"
+				}`}
+			>
 				{/* Space background with opacity overlay */}
 				<div
 					className="absolute inset-0"
@@ -47,11 +51,13 @@ export const HeroSection = () => {
 				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-10" />
 
 				{/* AVAILABILITY BADGE - Top Left of entire screen with animation */}
-				<div className={`fixed top-4 left-4 z-30 transition-all duration-1000 ease-out delay-700 ${
-					textAnimated 
-						? 'translate-y-0 opacity-100' 
-						: '-translate-y-8 opacity-0'
-				}`}>
+				<div
+					className={`fixed top-4 left-4 z-30 transition-all duration-1000 ease-out delay-700 ${
+						textAnimated
+							? "translate-y-0 opacity-100"
+							: "-translate-y-8 opacity-0"
+					}`}
+				>
 					<div className="bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-2 rounded-lg pointer-events-auto">
 						<div className="relative size-3">
 							<div className="absolute size-full animate-ping rounded-full bg-green-300 opacity-65"></div>
@@ -178,28 +184,34 @@ export const HeroSection = () => {
 							className="w-[100px] h-[100px]"
 						/> */}
 
-						<h1 className={`mt-8 font-serif text-3xl md:text-5xl tracking-wide transition-all duration-1000 ease-out ${
-							textAnimated 
-								? 'translate-y-0 opacity-100' 
-								: 'translate-y-12 opacity-0'
-						}`}>
+						<h1
+							className={`mt-8 font-serif text-3xl md:text-5xl tracking-wide transition-all duration-1000 ease-out ${
+								textAnimated
+									? "translate-y-0 opacity-100"
+									: "translate-y-12 opacity-0"
+							}`}
+						>
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
-						<p className={`mt-4 text-white/60 md:text-lg max-w-xs transition-all duration-1000 ease-out delay-200 ${
-							textAnimated 
-								? 'translate-y-0 opacity-100' 
-								: 'translate-y-12 opacity-0'
-						}`}>
-							I am a passionate developer dedicated to crafting seamless and
-							engaging digital experiences.
+						<p
+							className={`mt-4 text-white/60 md:text-lg max-w-xs transition-all duration-1000 ease-out delay-200 ${
+								textAnimated
+									? "translate-y-0 opacity-100"
+									: "translate-y-12 opacity-0"
+							}`}
+						>
+							Bilingual technologist with a track record of turning complex
+							problems into real-world impact.
 						</p>
 
 						{/* BUTTON - Below description with animation */}
-						<div className={`mt-8 transition-all duration-1000 ease-out delay-500 ${
-							textAnimated 
-								? 'translate-y-0 opacity-100' 
-								: 'translate-y-12 opacity-0'
-						}`}>
+						<div
+							className={`mt-8 transition-all duration-1000 ease-out delay-500 ${
+								textAnimated
+									? "translate-y-0 opacity-100"
+									: "translate-y-12 opacity-0"
+							}`}
+						>
 							<a href="#about">
 								<MagicButton
 									title="Show my work"
