@@ -116,9 +116,29 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				}, 350);
 			}, 200);
 		} else {
-			setTranslateX(-(nextIndex * 100));
-			setCurrentIndex(nextIndex);
-			setTimeout(() => setIsTransitioning(false), 700);
+			// Check if transitioning from first slide (title) to second slide (caption)
+			if (currentIndex === 0) {
+				// Fade out title first
+				setIsTextFading(true);
+				
+				setTimeout(() => {
+					setTranslateX(-(nextIndex * 100));
+					setCurrentIndex(nextIndex);
+					
+					setTimeout(() => {
+						setIsTransitioning(false);
+						// Fade text back in
+						setTimeout(() => {
+							setIsTextFading(false);
+						}, 150);
+					}, 500);
+				}, 200);
+			} else {
+				// Normal transition for other slides
+				setTranslateX(-(nextIndex * 100));
+				setCurrentIndex(nextIndex);
+				setTimeout(() => setIsTransitioning(false), 700);
+			}
 		}
 	};
 
