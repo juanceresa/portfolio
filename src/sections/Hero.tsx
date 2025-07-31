@@ -177,7 +177,7 @@ export const HeroSection = () => {
 					</div>
 
 					{/* FOREGROUND CONTENT - Far Left */}
-					<div className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-sm">
+					<div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-sm">
 						{/* <Image
 							src={memojiImage}
 							alt="person behind laptop"
@@ -206,7 +206,7 @@ export const HeroSection = () => {
 
 						{/* BUTTON - Below description with animation */}
 						<div
-							className={`mt-8 transition-all duration-1000 ease-out delay-500 ${
+							className={`mt-4 transition-all duration-1000 ease-out delay-500 ${
 								textAnimated
 									? "translate-y-0 opacity-100"
 									: "translate-y-12 opacity-0"
