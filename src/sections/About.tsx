@@ -1,7 +1,6 @@
 "use client";
 
 import { SectionHeader } from "@/components/SectionHeader";
-import { Card } from "@/components/Card";
 import { TechIcon } from "@/components/TechIcon";
 import StarIcon from "@/assets/icons/star.svg";
 import bookImage from "@/assets/images/book-cover.png";
@@ -15,7 +14,9 @@ import GithubIcon from "@/assets/icons/github.svg";
 import dynamic from "next/dynamic";
 import { CardHeader } from "@/components/CardHeader";
 import { ToolboxItems } from "@/components/TollboxItems";
-import RayLight from "@/components/Raylight/RayLight";
+import BentoCard from "@/components/BentoCard";
+import { useEffect } from "react";
+import { Card } from "@/components/Card";
 
 const BentoItemMapLocation = dynamic(() => import("@/components/MapLocation"), {
 	ssr: false,
@@ -49,6 +50,30 @@ const toolboxItems = [
 ];
 
 export const AboutSection = () => {
+	useEffect(() => {
+		const bento = document.getElementById("bento");
+
+		if (!bento) return;
+
+		const handleMouseMove = (e: MouseEvent) => {
+			const cards = Array.from(document.getElementsByClassName("card"));
+			for (const card of cards) {
+				const rect = card.getBoundingClientRect();
+				const x = e.clientX - rect.left;
+				const y = e.clientY - rect.top;
+
+				(card as HTMLDivElement).style.setProperty("--mouse-x", `${x}px`);
+				(card as HTMLDivElement).style.setProperty("--mouse-y", `${y}px`);
+			}
+		};
+
+		bento.addEventListener("mousemove", handleMouseMove);
+
+		return () => {
+			bento.removeEventListener("mousemove", handleMouseMove);
+		};
+	}, []);
+
 	return (
 		<div className="py-20 lg:py-28">
 			<div className="container">
@@ -57,10 +82,9 @@ export const AboutSection = () => {
 					title="A Glimpse into My World"
 					description="Learn more about who I am, what I do, and what inspires me."
 				/>
-				<div className="mt-20 flex flex-col gap-8">
+				<div id="bento" className="mt-20 flex flex-col gap-8">
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-3">
-						<Card className="h-[320px] md:col-span-2 lg:col-span-1 relative overflow-hidden">
-							<RayLight className="top-4 left-8" type="primary" />
+						<BentoCard className="h-[320px] md:col-span-2 lg:col-span-1">
 							<CardHeader
 								title="My Reads" //REPLACE WITH SLIDESHOW
 								description="Explore the books shaping my perspectives."
@@ -68,10 +92,9 @@ export const AboutSection = () => {
 							<div className="w-40 mx-auto mt-2 md:mt-0">
 								<Image src={bookImage} alt="Book cover" />
 							</div>
-						</Card>
+						</BentoCard>
 
-						<Card className="h-[320px] md:col-span-3 lg:col-span-2 relative overflow-hidden">
-							<RayLight className="top-8 right-12" type="secondary" />
+						<BentoCard className="h-[320px] md:col-span-3 lg:col-span-2">
 							<CardHeader
 								title="My Toolbox"
 								description="Explore the technologies and tools I use to craft digital
@@ -89,23 +112,21 @@ export const AboutSection = () => {
 								className="mt-6"
 								itemsWrapperClassName="animate-move-right [animation-duration:25s]"
 							/>
-						</Card>
+						</BentoCard>
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 gap-8">
 						<Card className="h-[320px] p-0 flex flex-col md:col-span-3 lg:col-span-2 relative overflow-hidden">
-							<RayLight className="top-6 left-16" type="primary" />
 							<BentoItemMapLocation className="rounded-3xl" />
 						</Card>
 
-						<Card className="h-[320px] p-0 relative md:col-span-2 lg:col-span-1 overflow-hidden">
-							<RayLight className="top-12 right-8" type="secondary" />
+						<BentoCard className="h-[320px] p-0 md:col-span-2 lg:col-span-1">
 							<CardHeader // PLACEHOLDER -- MAYBE GITHUB STATS CARD
 								title="Beyond the Code"
 								description="Explore my interests, hobbies, and the things that inspire me
 								outside of coding."
 							/>
-						</Card>
+						</BentoCard>
 					</div>
 				</div>
 			</div>
