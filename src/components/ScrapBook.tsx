@@ -64,6 +64,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [translateX, setTranslateX] = useState(0);
 	const [isTransitioning, setIsTransitioning] = useState(false);
+	const [isTextFading, setIsTextFading] = useState(false);
 	const [hasBeenClicked, setHasBeenClicked] = useState(false);
 	const [isPaused, setIsPaused] = useState(false);
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
@@ -95,16 +96,25 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		const nextIndex = currentIndex + 1;
 
 		if (nextIndex >= scrapbookImages.length) {
-			// Moving from last to first - continue right using duplicated images
-			setTranslateX(-(nextIndex * 100));
-			setCurrentIndex(nextIndex);
-
-			// After transition completes, reset to first image position without transition
+			// Moving from last to first - fade out text first
+			setIsTextFading(true);
+			
+			// Wait a moment for text to fade, then start slide
 			setTimeout(() => {
-				setIsTransitioning(false);
-				setTranslateX(0);
-				setCurrentIndex(0);
-			}, 700);
+				setTranslateX(-(nextIndex * 100));
+				setCurrentIndex(nextIndex);
+				
+				// After slide completes, snap back and fade text back in
+				setTimeout(() => {
+					setIsTransitioning(false);
+					setTranslateX(0);
+					setCurrentIndex(0);
+					// Fade text back in
+					setTimeout(() => {
+						setIsTextFading(false);
+					}, 150);
+				}, 350);
+			}, 200);
 		} else {
 			setTranslateX(-(nextIndex * 100));
 			setCurrentIndex(nextIndex);
@@ -143,7 +153,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				<div
 					className={`flex h-full ${
 						isTransitioning
-							? "transition-transform duration-700 ease-in-out"
+							? "transition-transform duration-500 ease-in-out"
 							: ""
 					}`}
 					style={{ transform: `translateX(${translateX}%)` }}
@@ -170,7 +180,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Top title for headshot only */}
 			{currentImage.title && (
-				<div className="absolute top-2 left-5 z-10 flex justify-center transition-opacity duration-300 opacity-90 group-hover:opacity-100">
+				<div className={`absolute top-2 left-5 z-10 flex justify-center transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-90 group-hover:opacity-100'}`}>
 					<h2 className="text-white text-2xl font-serif font-semibold drop-shadow-lg opacity-100">
 						{currentImage.title}
 					</h2>
@@ -183,7 +193,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				<div className="space-y-4">
 					{/* Caption - subtle by default, more visible on hover */}
 					{currentImage.caption && (
-						<p className="text-white font-medium drop-shadow-lg transition-opacity duration-300 opacity-20 group-hover:opacity-100">
+						<p className={`text-white font-medium drop-shadow-lg transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-20 group-hover:opacity-100'}`}>
 							{currentImage.caption}
 						</p>
 					)}
