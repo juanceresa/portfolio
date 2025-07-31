@@ -11,51 +11,49 @@ export async function GET() {
   }
 
   try {
-    // Fetch last 7 days stats
-    const [last7DaysResponse, allTimeResponse] = await Promise.all([
-      fetch('https://wakatime.com/api/v1/users/current/stats/last_7_days', {
-        headers: {
-          Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString('base64')}`,
-        },
-        next: { revalidate: 3600 },
-      }),
-      fetch('https://wakatime.com/api/v1/users/current/stats/all_time', {
-        headers: {
-          Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString('base64')}`,
-        },
-        next: { revalidate: 3600 },
-      })
-    ]);
+    // Get current month in YYYY-MM format
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    
+    // Fetch this month's stats only
+    const thisMonthResponse = await fetch(`https://wakatime.com/api/v1/users/current/stats/${currentMonth}`, {
+      headers: {
+        Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString('base64')}`,
+      },
+      next: { revalidate: 3600 },
+    });
 
-    if (!last7DaysResponse.ok) {
-      throw new Error(`WakaTime API error: ${last7DaysResponse.status}`);
+    if (!thisMonthResponse.ok) {
+      throw new Error(`WakaTime API error: ${thisMonthResponse.status}`);
     }
 
-    const last7DaysData = await last7DaysResponse.json();
-    const allTimeData = allTimeResponse.ok ? await allTimeResponse.json() : null;
+    const thisMonthData = await thisMonthResponse.json();
 
     // Transform the data to match our component interface
     const transformedData = {
-      // Daily average from last 7 days (as per Stats API docs)
-      daily_average_seconds: last7DaysData.data.daily_average || 0,
-      daily_average_text: last7DaysData.data.human_readable_daily_average || '0 mins',
+      // Daily average from this month
+      daily_average_text: thisMonthData.data.human_readable_daily_average || '0 mins',
       
-      // Best day from all time stats (has date, text, total_seconds per API docs)
-      best_day: allTimeData?.data?.best_day ? {
-        date: allTimeData.data.best_day.date,
-        text: allTimeData.data.best_day.text, // human readable from API
-        total_seconds: allTimeData.data.best_day.total_seconds,
+      // Best day from this month
+      best_day: thisMonthData.data.best_day ? {
+        date: thisMonthData.data.best_day.date,
+        text: thisMonthData.data.best_day.text,
+        total_seconds: thisMonthData.data.best_day.total_seconds,
       } : null,
       
-      // All time project breakdown with total hours
-      all_time_projects: allTimeData?.data?.projects?.map((project: any) => ({
-        name: project.name,
-        total_seconds: project.total_seconds,
-        text: project.text, // human readable total from API
-        hours: project.hours,
-        minutes: project.minutes,
-        percent: project.percent,
-      })) || [],
+      // Top project this month
+      top_project: thisMonthData.data.projects?.[0] ? {
+        name: thisMonthData.data.projects[0].name,
+        text: thisMonthData.data.projects[0].text,
+        percent: thisMonthData.data.projects[0].percent,
+      } : null,
+      
+      // Top language this month
+      top_language: thisMonthData.data.languages?.[0] ? {
+        name: thisMonthData.data.languages[0].name,
+        text: thisMonthData.data.languages[0].text,
+        percent: thisMonthData.data.languages[0].percent,
+      } : null,
     };
 
     return NextResponse.json(transformedData);

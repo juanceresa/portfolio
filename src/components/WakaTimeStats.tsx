@@ -3,26 +3,29 @@
 import { useEffect, useState } from "react";
 import { CardHeader } from "./CardHeader";
 
-interface WakaTimeProject {
-	name: string;
-	total_seconds: number;
-	text: string; // human readable total from API
-	hours: number;
-	minutes: number;
-	percent: number;
-}
-
 interface WakaTimeBestDay {
 	date: string;
 	text: string; // human readable from API
 	total_seconds: number;
 }
 
+interface WakaTimeLanguage {
+	name: string;
+	text: string;
+	percent: number;
+}
+
+interface WakaTimeProject {
+	name: string;
+	text: string;
+	percent: number;
+}
+
 interface WakaTimeStats {
-	daily_average_seconds: number;
 	daily_average_text: string;
 	best_day: WakaTimeBestDay | null;
-	all_time_projects: WakaTimeProject[];
+	top_project: WakaTimeProject | null;
+	top_language: WakaTimeLanguage | null;
 }
 
 export const WakaTimeStats = () => {
@@ -60,10 +63,9 @@ export const WakaTimeStats = () => {
 	if (error) {
 		return (
 			<div className="h-full flex flex-col">
-				<CardHeader
-					title="Coding Activity"
-					description="My development stats and project breakdown"
-				/>
+				<div className="mb-4">
+					<h3 className="text-white text-lg font-semibold">Stats This Month</h3>
+				</div>
 				<div className="flex items-center justify-center flex-1">
 					<div className="text-white/60 text-sm">{error}</div>
 				</div>
@@ -81,12 +83,12 @@ export const WakaTimeStats = () => {
 
 	return (
 		<div className="h-full flex flex-col">
-			{/* <CardHeader
-        title="Coding Activity"
-        description="My development stats and project breakdown"
-      /> */}
+			{/* Elegant Title */}
+			<div className="mb-4">
+				<h3 className="text-white text-lg font-semibold">Stats This Month</h3>
+			</div>
 
-			<div className="flex-1 space-y-4 mt-4">
+			<div className="flex-1 space-y-3">
 				{/* Daily Average */}
 				<div className="bg-white/5 rounded-lg p-3">
 					<div className="flex items-center justify-between">
@@ -113,7 +115,6 @@ export const WakaTimeStats = () => {
 						<div className="text-white/60 text-xs">
 							{new Date(stats.best_day.date).toLocaleDateString("en-US", {
 								weekday: "long",
-								year: "numeric",
 								month: "long",
 								day: "numeric",
 							})}
@@ -121,47 +122,44 @@ export const WakaTimeStats = () => {
 					</div>
 				)}
 
-				{/* Project Breakdown */}
-				<div>
-					<h4 className="text-white/90 text-sm font-medium mb-2">
-						Project Breakdown (All Time)
-					</h4>
-					<div className="space-y-2 max-h-40 overflow-y-auto">
-						{stats.all_time_projects.slice(0, 6).map((project, index) => (
-							<div
-								key={project.name}
-								className="flex items-center justify-between bg-white/5 rounded-lg p-2"
-							>
-								<div className="flex items-center space-x-2">
-									<div
-										className="w-2 h-2 rounded-full"
-										style={{ backgroundColor: getProjectColor(index) }}
-									/>
-									<span className="text-white/80 text-xs truncate max-w-[120px]">
-										{project.name}
-									</span>
-								</div>
-								<span className="text-white/60 text-xs font-mono">
-									{project.text}
+				{/* Top Language */}
+				{stats.top_language && (
+					<div className="bg-white/5 rounded-lg p-3">
+						<div className="flex items-center justify-between">
+							<span className="text-white/80 text-sm font-medium">
+								Top Language
+							</span>
+							<div className="flex items-center space-x-2">
+								<span className="text-emerald-400 text-sm font-mono">
+									{stats.top_language.name}
+								</span>
+								<span className="text-white/60 text-xs">
+									{stats.top_language.percent.toFixed(1)}%
 								</span>
 							</div>
-						))}
+						</div>
 					</div>
-				</div>
+				)}
+
+				{/* Top Project */}
+				{stats.top_project && (
+					<div className="bg-white/5 rounded-lg p-3">
+						<div className="flex items-center justify-between">
+							<span className="text-white/80 text-sm font-medium">
+								Top Project
+							</span>
+							<div className="flex items-center space-x-2">
+								<span className="text-amber-400 text-sm font-mono">
+									{stats.top_project.name}
+								</span>
+								<span className="text-white/60 text-xs">
+									{stats.top_project.percent.toFixed(1)}%
+								</span>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);
 };
-
-function getProjectColor(index: number): string {
-	const colors = [
-		"#8b5cf6", // purple-500
-		"#06b6d4", // cyan-500
-		"#10b981", // emerald-500
-		"#f59e0b", // amber-500
-		"#ef4444", // red-500
-		"#3b82f6", // blue-500
-	];
-
-	return colors[index % colors.length];
-}
