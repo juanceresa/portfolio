@@ -3,8 +3,6 @@
 import { SectionHeader } from "@/components/SectionHeader";
 import { TechIcon } from "@/components/TechIcon";
 import StarIcon from "@/assets/icons/star.svg";
-import bookImage from "@/assets/images/book-cover.png";
-import Image from "next/image";
 import JavascriptIcon from "@/assets/icons/square-js.svg";
 import HtmlIcon from "@/assets/icons/html5.svg";
 import CssIcon from "@/assets/icons/css3.svg";
@@ -15,6 +13,7 @@ import dynamic from "next/dynamic";
 import { CardHeader } from "@/components/CardHeader";
 import { ToolboxItems } from "@/components/TollboxItems";
 import BentoCard from "@/components/BentoCard";
+import { ScrapBook } from "@/components/ScrapBook";
 import { useEffect } from "react";
 import { Card } from "@/components/Card";
 
@@ -84,14 +83,8 @@ export const AboutSection = () => {
 				/>
 				<div id="bento" className="mt-20 flex flex-col gap-8">
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-3">
-						<BentoCard className="h-[320px] md:col-span-2 lg:col-span-1">
-							<CardHeader
-								title="My Reads" //REPLACE WITH SLIDESHOW
-								description="Explore the books shaping my perspectives."
-							/>
-							<div className="w-40 mx-auto mt-2 md:mt-0">
-								<Image src={bookImage} alt="Book cover" />
-							</div>
+						<BentoCard className="h-[320px] md:col-span-2 lg:col-span-1 [&>.card-content]:p-0">
+							<ScrapBook className="h-full w-full" />
 						</BentoCard>
 
 						<BentoCard className="h-[320px] md:col-span-3 lg:col-span-2">
@@ -116,9 +109,9 @@ export const AboutSection = () => {
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 gap-8">
-						<Card className="h-[320px] p-0 flex flex-col md:col-span-3 lg:col-span-2 relative overflow-hidden">
+						<BentoCard className="h-[320px] p-0 flex flex-col md:col-span-3 lg:col-span-2 [&>.card-content]:p-0">
 							<BentoItemMapLocation className="rounded-3xl" />
-						</Card>
+						</BentoCard>
 
 						<BentoCard className="h-[320px] p-0 md:col-span-2 lg:col-span-1">
 							<CardHeader // PLACEHOLDER -- MAYBE GITHUB STATS CARD
