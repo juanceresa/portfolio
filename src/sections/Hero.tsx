@@ -15,11 +15,16 @@ import { useState } from "react";
 
 export const HeroSection = () => {
 	const [globeReady, setGlobeReady] = useState(false);
+	const [textAnimated, setTextAnimated] = useState(false);
 
 	const handleGlobeLoaded = () => {
 		// Add delay to ensure OrbitControls are properly positioned before showing
 		setTimeout(() => {
 			setGlobeReady(true);
+			// Trigger text animation shortly after globe is ready
+			setTimeout(() => {
+				setTextAnimated(true);
+			}, 300);
 		}, 150);
 	};
 
@@ -169,16 +174,28 @@ export const HeroSection = () => {
 							className="w-[100px] h-[100px]"
 						/> */}
 
-						<h1 className="mt-8 font-serif text-3xl md:text-5xl tracking-wide">
+						<h1 className={`mt-8 font-serif text-3xl md:text-5xl tracking-wide transition-all duration-1000 ease-out ${
+							textAnimated 
+								? 'translate-y-0 opacity-100' 
+								: 'translate-y-12 opacity-0'
+						}`}>
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
-						<p className="mt-4 text-white/60 md:text-lg max-w-xs">
+						<p className={`mt-4 text-white/60 md:text-lg max-w-xs transition-all duration-1000 ease-out delay-200 ${
+							textAnimated 
+								? 'translate-y-0 opacity-100' 
+								: 'translate-y-12 opacity-0'
+						}`}>
 							I am a passionate developer dedicated to crafting seamless and
 							engaging digital experiences.
 						</p>
 
-						{/* BUTTON - Below description */}
-						<div className="mt-8">
+						{/* BUTTON - Below description with animation */}
+						<div className={`mt-8 transition-all duration-1000 ease-out delay-500 ${
+							textAnimated 
+								? 'translate-y-0 opacity-100' 
+								: 'translate-y-12 opacity-0'
+						}`}>
 							<a href="#about">
 								<MagicButton
 									title="Show my work"
