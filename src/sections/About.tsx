@@ -83,7 +83,7 @@ export const AboutSection = () => {
 				/>
 				<div id="bento" className="mt-20 flex flex-col gap-8">
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-3">
-						<BentoCard className="h-[320px] md:col-span-2 lg:col-span-1 [&>.card-content]:p-0">
+						<BentoCard className="h-[320px] md:col-span-2 lg:col-span-1 [&>.card-content]:p-0 before:!opacity-0">
 							<ScrapBook className="h-full w-full" />
 						</BentoCard>
 
