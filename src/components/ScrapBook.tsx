@@ -8,6 +8,7 @@ import family from "@/assets/images/family.png";
 import headshot from "@/assets/images/Headshot.jpg";
 import granada from "@/assets/images/fa92427f-ab81-42d9-8752-1245030905ef.jpg";
 import swim from "@/assets/images/swim.JPG";
+import hiking from "@/assets/images/IMG_6984.png";
 import memojiAvatar5 from "@/assets/images/memoji-avatar-5.png";
 import memojiComputer from "@/assets/images/memoji-computer.png";
 import memojiSmile from "@/assets/images/memoji-smile.png";
@@ -37,11 +38,13 @@ const scrapbookImages = [
 		src: granada,
 		alt: "Granada",
 		caption: "Ask me about my study abroad in Granada, Spain!",
+		location: "Granada, Spain",
 	},
 	{
-		src: darkSaas,
-		alt: "Dark SaaS Landing Page",
-		caption: "Dark theme SaaS",
+		src: hiking,
+		alt: "Hiking in the Canary Islands",
+		caption: "Lover of the outdoors",
+		location: "Canary Islands",
 	},
 	{
 		src: lightSaas,
@@ -84,15 +87,15 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 	const nextSlide = () => {
 		if (isTransitioning) return;
-		
+
 		setIsTransitioning(true);
 		const nextIndex = currentIndex + 1;
-		
+
 		if (nextIndex >= scrapbookImages.length) {
 			// Moving from last to first - continue right using duplicated images
 			setTranslateX(-(nextIndex * 100));
 			setCurrentIndex(nextIndex);
-			
+
 			// After transition completes, reset to first image position without transition
 			setTimeout(() => {
 				setIsTransitioning(false);
@@ -134,7 +137,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		>
 			{/* Sliding carousel container */}
 			<div className="absolute inset-0 overflow-hidden">
-				<div 
+				<div
 					className={`flex h-full ${isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
 					style={{ transform: `translateX(${translateX}%)` }}
 				>
@@ -144,13 +147,29 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 								src={image.src}
 								alt={image.alt}
 								fill
-								className={`object-cover transition-transform duration-300 ${
-									image.alt === "Juan Ceresa"
-										? `${image.cropClass || ""}`
-										: `group-hover:scale-102 ${image.cropClass || ""}`
-								}`}
+								className={`object-cover ${image.cropClass || ""}`}
 								sizes="(max-width: 768px) 100vw, 50vw"
 							/>
+							
+							{/* Location Pin Overlay */}
+							{image.location && (
+								<div className="absolute top-6 left-6 z-20">
+									<div className="location-pin flex items-center gap-2 bg-black/80 rounded-full px-4 py-2.5 text-white font-medium opacity-30 hover:opacity-100 transition-opacity duration-300">
+										{/* Pin Icon */}
+										<svg 
+											className="w-5 h-5 text-red-400" 
+											fill="currentColor" 
+											viewBox="0 0 24 24"
+										>
+											<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+										</svg>
+										<span className="drop-shadow-lg">
+											{image.location}
+										</span>
+									</div>
+								</div>
+							)}
+							
 						</div>
 					))}
 				</div>
