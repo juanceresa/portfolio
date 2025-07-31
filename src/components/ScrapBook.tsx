@@ -153,11 +153,11 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 							
 							{/* Location Pin Overlay */}
 							{image.location && (
-								<div className="absolute top-6 left-6 z-20">
-									<div className="location-pin flex items-center gap-2 bg-black/80 rounded-full px-4 py-2.5 text-white font-medium opacity-30 hover:opacity-100 transition-opacity duration-300">
+								<div className="absolute bottom-8 right-6 z-20">
+									<div className="location-pin flex items-center gap-1.5 bg-black/60 rounded-full px-2.5 py-1.5 text-white text-sm font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-300">
 										{/* Pin Icon */}
 										<svg 
-											className="w-5 h-5 text-red-400" 
+											className="w-3 h-3 text-red-400" 
 											fill="currentColor" 
 											viewBox="0 0 24 24"
 										>
