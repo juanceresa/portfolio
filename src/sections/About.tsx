@@ -15,6 +15,7 @@ import GithubIcon from "@/assets/icons/github.svg";
 import dynamic from "next/dynamic";
 import { CardHeader } from "@/components/CardHeader";
 import { ToolboxItems } from "@/components/TollboxItems";
+import RayLight from "@/components/Raylight/RayLight";
 
 const BentoItemMapLocation = dynamic(() => import("@/components/MapLocation"), {
 	ssr: false,
@@ -58,7 +59,8 @@ export const AboutSection = () => {
 				/>
 				<div className="mt-20 flex flex-col gap-8">
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-3">
-						<Card className="h-[320px] md:col-span-2 lg:col-span-1">
+						<Card className="h-[320px] md:col-span-2 lg:col-span-1 relative overflow-hidden">
+							<RayLight className="top-4 left-8" type="primary" />
 							<CardHeader
 								title="My Reads" //REPLACE WITH SLIDESHOW
 								description="Explore the books shaping my perspectives."
@@ -68,7 +70,8 @@ export const AboutSection = () => {
 							</div>
 						</Card>
 
-						<Card className="h-[320px] md:col-span-3 lg:col-span-2">
+						<Card className="h-[320px] md:col-span-3 lg:col-span-2 relative overflow-hidden">
+							<RayLight className="top-8 right-12" type="secondary" />
 							<CardHeader
 								title="My Toolbox"
 								description="Explore the technologies and tools I use to craft digital
@@ -90,11 +93,13 @@ export const AboutSection = () => {
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 gap-8">
-						<Card className="h-[320px] p-0 flex flex-col md:col-span-3 lg:col-span-2">
+						<Card className="h-[320px] p-0 flex flex-col md:col-span-3 lg:col-span-2 relative overflow-hidden">
+							<RayLight className="top-6 left-16" type="primary" />
 							<BentoItemMapLocation className="rounded-3xl" />
 						</Card>
 
-						<Card className="h-[320px] p-0 relative md:col-span-2 lg:col-span-1">
+						<Card className="h-[320px] p-0 relative md:col-span-2 lg:col-span-1 overflow-hidden">
+							<RayLight className="top-12 right-8" type="secondary" />
 							<CardHeader // PLACEHOLDER -- MAYBE GITHUB STATS CARD
 								title="Beyond the Code"
 								description="Explore my interests, hobbies, and the things that inspire me
