@@ -98,12 +98,12 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		if (nextIndex >= scrapbookImages.length) {
 			// Moving from last to first - fade out text first
 			setIsTextFading(true);
-			
+
 			// Wait a moment for text to fade, then start slide
 			setTimeout(() => {
 				setTranslateX(-(nextIndex * 100));
 				setCurrentIndex(nextIndex);
-				
+
 				// After slide completes, snap back and fade text back in
 				setTimeout(() => {
 					setIsTransitioning(false);
@@ -120,11 +120,11 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			if (currentIndex === 0) {
 				// Fade out title first
 				setIsTextFading(true);
-				
+
 				setTimeout(() => {
 					setTranslateX(-(nextIndex * 100));
 					setCurrentIndex(nextIndex);
-					
+
 					setTimeout(() => {
 						setIsTransitioning(false);
 						// Fade text back in
@@ -200,7 +200,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Top title for headshot only */}
 			{currentImage.title && (
-				<div className={`absolute top-2 left-5 z-10 flex justify-center transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-90 group-hover:opacity-100'}`}>
+				<div className={`absolute top-2 left-6 right-6 z-10 flex justify-center transition-opacity duration-300 ${isTextFading ? 'opacity-0' : 'opacity-90 group-hover:opacity-100'}`}>
 					<h2 className="text-white text-2xl font-serif font-semibold drop-shadow-lg opacity-100">
 						{currentImage.title}
 					</h2>
