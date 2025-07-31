@@ -56,21 +56,21 @@ interface ScrapBookProps {
 
 export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [translateX, setTranslateX] = useState(0);
 	const [isTransitioning, setIsTransitioning] = useState(false);
 	const [hasBeenClicked, setHasBeenClicked] = useState(false);
 	const [isPaused, setIsPaused] = useState(false);
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
 
+	// Create infinite scroll by duplicating images
+	const infiniteImages = [...scrapbookImages, ...scrapbookImages];
+
 	// Auto-rotation logic
 	const startAutoRotate = () => {
 		if (autoRotateRef.current) clearInterval(autoRotateRef.current);
 		autoRotateRef.current = setInterval(() => {
-			if (!isPaused && !isTransitioning) {
-				setIsTransitioning(true);
-				setTimeout(() => {
-					setCurrentIndex((prev) => (prev + 1) % scrapbookImages.length);
-					setIsTransitioning(false);
-				}, 400);
+			if (!isPaused) {
+				nextSlide();
 			}
 		}, 8000); // Auto-rotate every 8 seconds
 	};
@@ -82,14 +82,36 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		}
 	};
 
+	const nextSlide = () => {
+		if (isTransitioning) return;
+		
+		setIsTransitioning(true);
+		const nextIndex = currentIndex + 1;
+		
+		if (nextIndex >= scrapbookImages.length) {
+			// Moving from last to first - continue right using duplicated images
+			setTranslateX(-(nextIndex * 100));
+			setCurrentIndex(nextIndex);
+			
+			// After transition completes, reset to first image position without transition
+			setTimeout(() => {
+				setIsTransitioning(false);
+				setTranslateX(0);
+				setCurrentIndex(0);
+			}, 700);
+		} else {
+			setTranslateX(-(nextIndex * 100));
+			setCurrentIndex(nextIndex);
+			setTimeout(() => setIsTransitioning(false), 700);
+		}
+	};
+
 	useEffect(() => {
 		startAutoRotate();
 		return () => stopAutoRotate();
 	}, [isPaused, isTransitioning]);
 
 	const handleCardClick = () => {
-		if (isTransitioning) return;
-
 		if (!hasBeenClicked) {
 			setHasBeenClicked(true);
 		}
@@ -98,14 +120,10 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		setIsPaused(true);
 		setTimeout(() => setIsPaused(false), 12000); // Resume after 12 seconds
 
-		setIsTransitioning(true);
-		setTimeout(() => {
-			setCurrentIndex((prev) => (prev + 1) % scrapbookImages.length);
-			setIsTransitioning(false);
-		}, 200);
+		nextSlide();
 	};
 
-	const currentImage = scrapbookImages[currentIndex];
+	const currentImage = scrapbookImages[currentIndex % scrapbookImages.length];
 
 	return (
 		<div
@@ -114,23 +132,28 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			onMouseEnter={() => setIsPaused(true)}
 			onMouseLeave={() => setIsPaused(false)}
 		>
-			{/* Full-screen background image - fill completely */}
-			<div className="absolute inset-0">
-				<Image
-					src={currentImage.src}
-					alt={currentImage.alt}
-					fill
-					className={`object-cover w-full h-full ${
-						currentImage.alt === "Juan Ceresa"
-							? `${currentImage.cropClass || ""}`
-							: `transition-all duration-700 ${
-									isTransitioning
-										? "opacity-0 scale-110"
-										: "opacity-100 scale-100"
-							  } group-hover:scale-105 ${currentImage.cropClass || ""}`
-					}`}
-					sizes="(max-width: 768px) 100vw, 50vw"
-				/>
+			{/* Sliding carousel container */}
+			<div className="absolute inset-0 overflow-hidden">
+				<div 
+					className={`flex h-full ${isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
+					style={{ transform: `translateX(${translateX}%)` }}
+				>
+					{infiniteImages.map((image, index) => (
+						<div key={`${index}-${image.alt}`} className="w-full h-full flex-shrink-0 relative overflow-hidden">
+							<Image
+								src={image.src}
+								alt={image.alt}
+								fill
+								className={`object-cover transition-transform duration-300 ${
+									image.alt === "Juan Ceresa"
+										? `${image.cropClass || ""}`
+										: `group-hover:scale-102 ${image.cropClass || ""}`
+								}`}
+								sizes="(max-width: 768px) 100vw, 50vw"
+							/>
+						</div>
+					))}
+				</div>
 			</div>
 
 			{/* Dark overlay for better text readability */}
