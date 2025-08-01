@@ -73,9 +73,13 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [isFirstVisit, setIsFirstVisit] = useState(true);
 	const [hasEnteredView, setHasEnteredView] = useState(false);
 	const [showBlankTerminal, setShowBlankTerminal] = useState(true);
+	const [showTerminalScreen, setShowTerminalScreen] = useState(false);
+	const [terminalSlideUp, setTerminalSlideUp] = useState(false);
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
 	const typedRef = useRef<HTMLSpanElement>(null);
+	const terminalTypedRef = useRef<HTMLSpanElement>(null);
 	const typedInstance = useRef<Typed | null>(null);
+	const terminalTypedInstance = useRef<Typed | null>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	// Create infinite scroll by duplicating images
@@ -190,8 +194,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			// Different animations for first visit vs replays
 			const firstVisitStrings = [
 				"Welcome to my Portfolio^1000",
-				"Welcome to my Portfolio^500... opening scrapbook^800",
-				"$ ./scrapbook --interactive^1000",
+				"Welcome to my Portfolio^500... starting slideshow^1000",
 			];
 
 			const replayStrings = [
@@ -209,16 +212,14 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				showCursor: true,
 				cursorChar: "_",
 				onComplete: () => {
-					// Wait a moment then fade out intro
+					// Wait a moment then show terminal screen
 					setTimeout(() => {
-						setIntroComplete(true);
-						// Start fade out after brief pause
+						setShowIntro(false);
+						setShowTerminalScreen(true);
+						// Trigger terminal slide-up after screen shows
 						setTimeout(() => {
-							setShowIntro(false);
-							// Ensure we're on the first image after intro
-							setCurrentIndex(0);
-							setTranslateX(0);
-						}, 1000);
+							setTerminalSlideUp(true);
+						}, 100);
 					}, 800);
 				},
 			});
@@ -232,12 +233,50 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		};
 	}, [showIntro]);
 
+	// Initialize Terminal screen typing animation
 	useEffect(() => {
-		if (!showIntro) {
+		if (terminalSlideUp && terminalTypedRef.current && !terminalTypedInstance.current) {
+			const terminalStrings = [
+				"opening scrapbook...^800",
+				"opening scrapbook...<br>juan@portfolio:~$ ./scrapbook --interactive^1000",
+			];
+
+			terminalTypedInstance.current = new Typed(terminalTypedRef.current, {
+				strings: terminalStrings,
+				typeSpeed: 25,
+				backSpeed: 25,
+				backDelay: 200,
+				startDelay: 500,
+				loop: false,
+				showCursor: true,
+				cursorChar: "_",
+				contentType: 'html',
+				onComplete: () => {
+					// Wait a moment then transition to slideshow
+					setTimeout(() => {
+						setShowTerminalScreen(false);
+						// Ensure we're on the first image after intro
+						setCurrentIndex(0);
+						setTranslateX(0);
+					}, 1000);
+				},
+			});
+		}
+
+		return () => {
+			if (terminalTypedInstance.current) {
+				terminalTypedInstance.current.destroy();
+				terminalTypedInstance.current = null;
+			}
+		};
+	}, [terminalSlideUp]);
+
+	useEffect(() => {
+		if (!showIntro && !showTerminalScreen) {
 			startAutoRotate();
 		}
 		return () => stopAutoRotate();
-	}, [isPaused, isTransitioning, showIntro]);
+	}, [isPaused, isTransitioning, showIntro, showTerminalScreen]);
 
 	const handleCardClick = () => {
 		if (!hasBeenClicked) {
@@ -257,9 +296,9 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 		<div
 			ref={containerRef}
 			className={`relative cursor-pointer group overflow-hidden ${className}`}
-			onClick={!showIntro ? handleCardClick : undefined}
-			onMouseEnter={() => !showIntro && setIsPaused(true)}
-			onMouseLeave={() => !showIntro && setIsPaused(false)}
+			onClick={!showIntro && !showTerminalScreen ? handleCardClick : undefined}
+			onMouseEnter={() => !showIntro && !showTerminalScreen && setIsPaused(true)}
+			onMouseLeave={() => !showIntro && !showTerminalScreen && setIsPaused(false)}
 		>
 			{/* Blank Terminal Screen - shown before scroll trigger */}
 			{showBlankTerminal && (
@@ -282,6 +321,41 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 					</div>
 				</div>
 			)}
+
+			{/* Terminal Window - slides up from bottom */}
+			{showTerminalScreen && (
+				<div className="absolute inset-0 z-[60] bg-black flex flex-col items-center justify-center">
+					{/* Keep the green text visible */}
+					<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
+						<span>Welcome to my Portfolio... starting scrapbook</span>
+					</div>
+					
+					{/* Small Terminal Window */}
+					<div 
+						className="bg-gray-900 border border-gray-700 rounded-lg shadow-2xl transition-all duration-700 ease-out"
+						style={{
+							width: '350px',
+							height: '140px',
+							transform: terminalSlideUp ? 'translateY(0)' : 'translateY(120px)',
+							opacity: terminalSlideUp ? 1 : 0,
+						}}
+					>
+						{/* Terminal Header */}
+						<div className="bg-gray-800 px-4 py-2 rounded-t-lg flex items-center gap-2">
+							<div className="w-3 h-3 bg-red-500 rounded-full"></div>
+							<div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+							<div className="w-3 h-3 bg-green-500 rounded-full"></div>
+							<span className="text-gray-400 text-xs ml-2">portfolio.sh</span>
+						</div>
+						{/* Terminal Content */}
+						<div className="p-3 font-mono text-green-400 text-xs leading-relaxed whitespace-pre-line h-full overflow-hidden">
+							<span className="text-blue-400">juan@portfolio:~$ </span>
+							<span ref={terminalTypedRef}></span>
+						</div>
+					</div>
+				</div>
+			)}
+
 			{/* Sliding carousel container */}
 			<div className="absolute inset-0 overflow-hidden">
 				<div
