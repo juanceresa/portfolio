@@ -6,11 +6,11 @@ import Typed from "typed.js";
 
 // Import scrapbook images
 import family from "@/assets/images/family.png";
-import headshot from "@/assets/images/Headshot.jpg";
+import headshot from "@/assets/images/headshot.jpg";
 import granada from "@/assets/images/fa92427f-ab81-42d9-8752-1245030905ef.jpg";
-import swim from "@/assets/images/swim.JPG";
-import hiking from "@/assets/images/IMG_6984.png";
-import football from "@/assets/images/IMG_5002.jpg";
+import swim from "@/assets/images/swim.jpg";
+import hiking from "@/assets/images/hiking.png";
+import football from "@/assets/images/football.jpg";
 import memojiAvatar5 from "@/assets/images/memoji-avatar-5.png";
 import memojiComputer from "@/assets/images/memoji-computer.png";
 import memojiSmile from "@/assets/images/memoji-smile.png";
