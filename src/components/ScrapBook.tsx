@@ -255,9 +255,10 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				cursorChar: "_",
 				contentType: 'html',
 				onComplete: () => {
-					// Wait a moment then start image slide-up (which will also fade out terminal)
+					// Wait a moment then start image slide-up and fade out black overlay simultaneously
 					setTimeout(() => {
 						setImageSlideUp(true);
+						setIntroComplete(true); // Fade out black overlay at same time as image slides up
 						// Ensure we're on the first image after intro
 						setCurrentIndex(0);
 						setTranslateX(0);
@@ -405,7 +406,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Fade overlay for smooth intro transitions */}
 			<div
-				className={`absolute inset-0 z-[25] bg-black transition-opacity duration-500 ${
+				className={`absolute inset-0 z-[55] bg-black transition-opacity duration-1000 ${
 					showIntro && !introComplete
 						? "opacity-100"
 						: "opacity-0 pointer-events-none"
@@ -413,7 +414,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			/>
 
 			{/* Dark overlay for better text readability */}
-			<div className="absolute inset-0 z-[15] bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
 
 			{/* Top title for headshot only - hidden since intro covers this */}
 			{currentImage.title && false && (
