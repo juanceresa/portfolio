@@ -93,7 +93,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			if (!isPaused) {
 				nextSlide();
 			}
-		}, 8000); // Auto-rotate every 8 seconds
+		}, 20000); // Auto-rotate every 20 seconds
 	};
 
 	const stopAutoRotate = () => {
@@ -118,18 +118,18 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			setIntroComplete(false);
 			// Mark as replay for subsequent visits
 			setIsFirstVisit(false);
-			
+
 			// Reset terminal animation states for restart
 			setShowTerminalScreen(false);
 			setTerminalSlideUp(false);
 			setImageSlideUp(false); // Hide image for slide-up effect
-			
+
 			// Destroy existing typed instances so they can be recreated
 			if (typedInstance.current) {
 				try {
 					typedInstance.current.destroy();
 				} catch (e) {
-					console.warn('Error destroying typedInstance:', e);
+					console.warn("Error destroying typedInstance:", e);
 				} finally {
 					typedInstance.current = null;
 				}
@@ -138,7 +138,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				try {
 					terminalTypedInstance.current.destroy();
 				} catch (e) {
-					console.warn('Error destroying terminalTypedInstance:', e);
+					console.warn("Error destroying terminalTypedInstance:", e);
 				} finally {
 					terminalTypedInstance.current = null;
 				}
@@ -217,12 +217,12 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			// Different animations for first visit vs replays
 			const firstVisitStrings = [
 				"Welcome to my Portfolio^1000",
-				"Welcome to my Portfolio^500... starting slideshow^1000",
+				"Welcome to my Portfolio^500...<br>Opening scrapbook^1000",
 			];
 
 			const replayStrings = [
-				"⚠️ scrapbook.exe: Memory overflow detected.^1000",
-				"Attempting restart...^1000",
+				"Memory overflow detected^1000",
+				"Memory overflow detected^500... <br>Attempting restart...^1000",
 			];
 
 			typedInstance.current = new Typed(typedRef.current, {
@@ -234,6 +234,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				loop: false,
 				showCursor: true,
 				cursorChar: "_",
+				contentType: "html",
 				onComplete: () => {
 					// Wait a moment then show terminal screen
 					setTimeout(() => {
@@ -258,18 +259,19 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 	// Initialize Terminal screen typing animation
 	useEffect(() => {
-		if (terminalSlideUp && terminalTypedRef.current && !terminalTypedInstance.current) {
-			const firstVisitTerminalStrings = [
-				"opening scrapbook...^800",
-				"opening scrapbook...<br>juan@portfolio:~$ ./scrapbook --interactive^1000",
-			];
+		if (
+			terminalSlideUp &&
+			terminalTypedRef.current &&
+			!terminalTypedInstance.current
+		) {
+			const firstVisitTerminalStrings = ["./scrapbook -interactive^1000"];
 
-			const restartTerminalStrings = [
-				"juan@portfolio:~$ ./scrapbook --restart^1000",
-			];
+			const restartTerminalStrings = ["./scrapbook --restart^1000"];
 
 			terminalTypedInstance.current = new Typed(terminalTypedRef.current, {
-				strings: isFirstVisit ? firstVisitTerminalStrings : restartTerminalStrings,
+				strings: isFirstVisit
+					? firstVisitTerminalStrings
+					: restartTerminalStrings,
 				typeSpeed: 25,
 				backSpeed: 25,
 				backDelay: 200,
@@ -277,7 +279,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				loop: false,
 				showCursor: true,
 				cursorChar: "_",
-				contentType: 'html',
+				contentType: "html",
 				onComplete: () => {
 					// Wait a moment then start image slide-up and fade out black overlay simultaneously
 					setTimeout(() => {
@@ -331,8 +333,12 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			ref={containerRef}
 			className={`relative cursor-pointer group overflow-hidden ${className}`}
 			onClick={!showIntro && !showTerminalScreen ? handleCardClick : undefined}
-			onMouseEnter={() => !showIntro && !showTerminalScreen && setIsPaused(true)}
-			onMouseLeave={() => !showIntro && !showTerminalScreen && setIsPaused(false)}
+			onMouseEnter={() =>
+				!showIntro && !showTerminalScreen && setIsPaused(true)
+			}
+			onMouseLeave={() =>
+				!showIntro && !showTerminalScreen && setIsPaused(false)
+			}
 		>
 			{/* Blank Terminal Screen - shown before scroll trigger */}
 			{showBlankTerminal && (
@@ -358,7 +364,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Terminal Window - slides up from bottom */}
 			{showTerminalScreen && (
-				<div 
+				<div
 					className="absolute inset-0 z-[60] bg-black flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out"
 					style={{
 						opacity: imageSlideUp ? 0 : 1,
@@ -367,17 +373,24 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 					{/* Keep the green text visible - only for first visit */}
 					{isFirstVisit && (
 						<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
-							<span>Welcome to my Portfolio... starting scrapbook</span>
+							<span>Welcome to my Portfolio... Opening scrapbook</span>
 						</div>
 					)}
-					
+					{!isFirstVisit && (
+						<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
+							<span> Memory overflow detected... Attempting restart. </span>
+						</div>
+					)}
+
 					{/* Small Terminal Window */}
-					<div 
+					<div
 						className="bg-gray-900 border border-gray-700 rounded-lg shadow-2xl transition-all duration-700 ease-out"
 						style={{
-							width: '350px',
-							height: '140px',
-							transform: terminalSlideUp ? 'translateY(0)' : 'translateY(120px)',
+							width: "350px",
+							height: "140px",
+							transform: terminalSlideUp
+								? "translateY(0)"
+								: "translateY(120px)",
 							opacity: terminalSlideUp ? 1 : 0,
 						}}
 					>
@@ -398,10 +411,10 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			)}
 
 			{/* Sliding carousel container */}
-			<div 
+			<div
 				className="absolute inset-0 overflow-hidden transition-all duration-1000 ease-in-out"
 				style={{
-					transform: imageSlideUp ? 'translateY(0)' : 'translateY(100%)',
+					transform: imageSlideUp ? "translateY(0)" : "translateY(100%)",
 					zIndex: showTerminalScreen ? 10 : 20, // Stay behind terminal when terminal is showing
 				}}
 			>
