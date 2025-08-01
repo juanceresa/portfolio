@@ -118,10 +118,30 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			setIntroComplete(false);
 			// Mark as replay for subsequent visits
 			setIsFirstVisit(false);
-			// Destroy existing typed instance so it can be recreated
+			
+			// Reset terminal animation states for restart
+			setShowTerminalScreen(false);
+			setTerminalSlideUp(false);
+			setImageSlideUp(false); // Hide image for slide-up effect
+			
+			// Destroy existing typed instances so they can be recreated
 			if (typedInstance.current) {
-				typedInstance.current.destroy();
-				typedInstance.current = null;
+				try {
+					typedInstance.current.destroy();
+				} catch (e) {
+					console.warn('Error destroying typedInstance:', e);
+				} finally {
+					typedInstance.current = null;
+				}
+			}
+			if (terminalTypedInstance.current) {
+				try {
+					terminalTypedInstance.current.destroy();
+				} catch (e) {
+					console.warn('Error destroying terminalTypedInstance:', e);
+				} finally {
+					terminalTypedInstance.current = null;
+				}
 			}
 
 			// Start slide transition
@@ -202,7 +222,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			const replayStrings = [
 				"⚠️ scrapbook.exe: Memory overflow detected.^1000",
-				"↻ Rebooting slideshow...^1000",
+				"Attempting restart...^1000",
 			];
 
 			typedInstance.current = new Typed(typedRef.current, {
@@ -239,13 +259,17 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	// Initialize Terminal screen typing animation
 	useEffect(() => {
 		if (terminalSlideUp && terminalTypedRef.current && !terminalTypedInstance.current) {
-			const terminalStrings = [
+			const firstVisitTerminalStrings = [
 				"opening scrapbook...^800",
 				"opening scrapbook...<br>juan@portfolio:~$ ./scrapbook --interactive^1000",
 			];
 
+			const restartTerminalStrings = [
+				"juan@portfolio:~$ ./scrapbook --restart^1000",
+			];
+
 			terminalTypedInstance.current = new Typed(terminalTypedRef.current, {
-				strings: terminalStrings,
+				strings: isFirstVisit ? firstVisitTerminalStrings : restartTerminalStrings,
 				typeSpeed: 25,
 				backSpeed: 25,
 				backDelay: 200,
@@ -277,7 +301,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				terminalTypedInstance.current = null;
 			}
 		};
-	}, [terminalSlideUp]);
+	}, [terminalSlideUp, isFirstVisit]);
 
 	useEffect(() => {
 		if (!showIntro && !showTerminalScreen) {
@@ -340,10 +364,12 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 						opacity: imageSlideUp ? 0 : 1,
 					}}
 				>
-					{/* Keep the green text visible */}
-					<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
-						<span>Welcome to my Portfolio... starting scrapbook</span>
-					</div>
+					{/* Keep the green text visible - only for first visit */}
+					{isFirstVisit && (
+						<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
+							<span>Welcome to my Portfolio... starting scrapbook</span>
+						</div>
+					)}
 					
 					{/* Small Terminal Window */}
 					<div 

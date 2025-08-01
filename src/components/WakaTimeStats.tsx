@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CardHeader } from "./CardHeader";
+import StarIcon from "@/assets/icons/star.svg";
 
 interface WakaTimeBestDay {
 	date: string;
@@ -66,7 +67,7 @@ export const WakaTimeStats = () => {
 		return (
 			<div className="h-full flex flex-col">
 				<div className="mb-4">
-					<h3 className="text-white text-lg font-semibold">Stats This Month</h3>
+					<h3 className="text-white text-lg font-serif font-semibold">Stats This Month</h3>
 				</div>
 				<div className="flex items-center justify-center flex-1">
 					<div className="text-white/60 text-sm">{error}</div>
@@ -87,7 +88,10 @@ export const WakaTimeStats = () => {
 		<div className="h-full flex flex-col">
 			{/* Elegant Title */}
 			<div className="mb-4">
-				<h3 className="text-white text-lg font-semibold">Stats This Month</h3>
+        <div className="inline-flex items-center gap-2">
+				  <StarIcon className="size-9 text-yellow-400" />
+          <h3 className="text-white text-xl font-serif">Stats This Month</h3>
+        </div>
 			</div>
 
 			<div className="flex-1 space-y-3">

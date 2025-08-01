@@ -11,50 +11,46 @@ export async function GET() {
   }
 
   try {
-    // Get current month in YYYY-MM format
-    const now = new Date();
-    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    
-    // Fetch this month's stats only
-    const thisMonthResponse = await fetch(`https://wakatime.com/api/v1/users/current/stats/${currentMonth}`, {
+    // Fetch last 30 days stats for rolling window
+    const last30DaysResponse = await fetch(`https://wakatime.com/api/v1/users/current/stats/last_30_days`, {
       headers: {
         Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString('base64')}`,
       },
       next: { revalidate: 3600 },
     });
 
-    if (!thisMonthResponse.ok) {
-      throw new Error(`WakaTime API error: ${thisMonthResponse.status}`);
+    if (!last30DaysResponse.ok) {
+      throw new Error(`WakaTime API error: ${last30DaysResponse.status}`);
     }
 
-    const thisMonthData = await thisMonthResponse.json();
+    const last30DaysData = await last30DaysResponse.json();
 
     // Transform the data to match our component interface
     const transformedData = {
-      // Daily average from this month
-      daily_average_text: thisMonthData.data.human_readable_daily_average || '0 mins',
+      // Daily average from last 30 days
+      daily_average_text: last30DaysData.data.human_readable_daily_average || '0 mins',
       
-      // Best day from this month
-      best_day: thisMonthData.data.best_day ? {
-        date: thisMonthData.data.best_day.date,
-        text: thisMonthData.data.best_day.text,
-        total_seconds: thisMonthData.data.best_day.total_seconds,
+      // Best day from last 30 days
+      best_day: last30DaysData.data.best_day ? {
+        date: last30DaysData.data.best_day.date,
+        text: last30DaysData.data.best_day.text,
+        total_seconds: last30DaysData.data.best_day.total_seconds,
       } : null,
       
-      // Top project this month
-      top_project: thisMonthData.data.projects?.[0] ? {
-        name: thisMonthData.data.projects[0].name,
-        text: thisMonthData.data.projects[0].text,
-        hours: thisMonthData.data.projects[0].hours,
-        minutes: thisMonthData.data.projects[0].minutes,
+      // Top project from last 30 days
+      top_project: (last30DaysData.data.projects && last30DaysData.data.projects.length > 0) ? {
+        name: last30DaysData.data.projects[0].name,
+        text: last30DaysData.data.projects[0].text,
+        hours: last30DaysData.data.projects[0].hours,
+        minutes: last30DaysData.data.projects[0].minutes,
       } : null,
       
-      // Top language this month
-      top_language: thisMonthData.data.languages?.[0] ? {
-        name: thisMonthData.data.languages[0].name,
-        text: thisMonthData.data.languages[0].text,
-        hours: thisMonthData.data.languages[0].hours,
-        minutes: thisMonthData.data.languages[0].minutes,
+      // Top language from last 30 days
+      top_language: (last30DaysData.data.languages && last30DaysData.data.languages.length > 0) ? {
+        name: last30DaysData.data.languages[0].name,
+        text: last30DaysData.data.languages[0].text,
+        hours: last30DaysData.data.languages[0].hours,
+        minutes: last30DaysData.data.languages[0].minutes,
       } : null,
     };
 
