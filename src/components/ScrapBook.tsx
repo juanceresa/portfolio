@@ -75,6 +75,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 	const [showBlankTerminal, setShowBlankTerminal] = useState(true);
 	const [showTerminalScreen, setShowTerminalScreen] = useState(false);
 	const [terminalSlideUp, setTerminalSlideUp] = useState(false);
+	const [imageSlideUp, setImageSlideUp] = useState(true); // Start visible, hide during intro
 	const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
 	const typedRef = useRef<HTMLSpanElement>(null);
 	const terminalTypedRef = useRef<HTMLSpanElement>(null);
@@ -172,6 +173,8 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 					setShowBlankTerminal(false);
 					setShowIntro(true);
 					setIntroComplete(false);
+					// Hide image initially for slide-up effect later
+					setImageSlideUp(false);
 				}
 			},
 			{ threshold: 0.6 } // Trigger when 60% of component is visible (more centered)
@@ -252,13 +255,17 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 				cursorChar: "_",
 				contentType: 'html',
 				onComplete: () => {
-					// Wait a moment then transition to slideshow
+					// Wait a moment then start image slide-up (which will also fade out terminal)
 					setTimeout(() => {
-						setShowTerminalScreen(false);
+						setImageSlideUp(true);
 						// Ensure we're on the first image after intro
 						setCurrentIndex(0);
 						setTranslateX(0);
-					}, 1000);
+						// Hide terminal after fade-out completes
+						setTimeout(() => {
+							setShowTerminalScreen(false);
+						}, 1000);
+					}, 800);
 				},
 			});
 		}
@@ -273,6 +280,8 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 	useEffect(() => {
 		if (!showIntro && !showTerminalScreen) {
+			// If we're not in intro flow, make sure image is visible
+			setImageSlideUp(true);
 			startAutoRotate();
 		}
 		return () => stopAutoRotate();
@@ -324,7 +333,12 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Terminal Window - slides up from bottom */}
 			{showTerminalScreen && (
-				<div className="absolute inset-0 z-[60] bg-black flex flex-col items-center justify-center">
+				<div 
+					className="absolute inset-0 z-[60] bg-black flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out"
+					style={{
+						opacity: imageSlideUp ? 0 : 1,
+					}}
+				>
 					{/* Keep the green text visible */}
 					<div className="font-mono text-green-400 text-lg md:text-xl p-8 max-w-2xl">
 						<span>Welcome to my Portfolio... starting scrapbook</span>
@@ -357,7 +371,13 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			)}
 
 			{/* Sliding carousel container */}
-			<div className="absolute inset-0 overflow-hidden">
+			<div 
+				className="absolute inset-0 overflow-hidden transition-all duration-1000 ease-in-out"
+				style={{
+					transform: imageSlideUp ? 'translateY(0)' : 'translateY(100%)',
+					zIndex: showTerminalScreen ? 10 : 20, // Stay behind terminal when terminal is showing
+				}}
+			>
 				<div
 					className={`flex h-full ${
 						isTransitioning
@@ -385,7 +405,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 
 			{/* Fade overlay for smooth intro transitions */}
 			<div
-				className={`absolute inset-0 z-[55] bg-black transition-opacity duration-500 ${
+				className={`absolute inset-0 z-[25] bg-black transition-opacity duration-500 ${
 					showIntro && !introComplete
 						? "opacity-100"
 						: "opacity-0 pointer-events-none"
@@ -393,7 +413,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			/>
 
 			{/* Dark overlay for better text readability */}
-			<div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+			<div className="absolute inset-0 z-[15] bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
 
 			{/* Top title for headshot only - hidden since intro covers this */}
 			{currentImage.title && false && (
@@ -409,7 +429,7 @@ export const ScrapBook = ({ className }: ScrapBookProps) => {
 			)}
 
 			{/* Content overlay */}
-			<div className="relative z-10 h-full flex flex-col justify-end p-6">
+			<div className="relative z-30 h-full flex flex-col justify-end p-6">
 				{/* Bottom content */}
 				<div className="space-y-4">
 					{/* Caption - subtle by default, more visible on hover */}
