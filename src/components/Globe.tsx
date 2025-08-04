@@ -212,15 +212,15 @@ export default function Globe({
 			<Canvas
 				camera={{ position: [0, 0, 5], fov: 50 }}
 				gl={{
-					antialias: true,
+					antialias: typeof window !== 'undefined' && window.innerWidth > 768,
 					alpha: true,
 					powerPreference: "high-performance",
 					stencil: false,
 					depth: true,
 				}}
 				frameloop="always"
-				performance={{ min: 0.8 }}
-				dpr={[1, 1.5]}
+				performance={{ min: 0.7 }}
+				dpr={typeof window !== 'undefined' && window.innerWidth <= 768 ? [1, 1.2] : [1, 1.5]}
 			>
 				{/* responsive lighting system */}
 				<ResponsiveLights />
@@ -233,21 +233,25 @@ export default function Globe({
 					}}
 				/>
 
-				{/* controls with momentum & "weight" */}
+				{/* controls with momentum & "weight" - mobile optimized */}
 				<OrbitControls
 					ref={controlsRef}
 					enableZoom={false}
 					enablePan={false}
 					enableRotate
-					rotateSpeed={1.5} // faster rotation speed
+					rotateSpeed={1.8} // slightly faster rotation speed for mobile
 					enableDamping
-					dampingFactor={0.02} // very low damping = much more momentum
+					dampingFactor={0.03} // slightly more damping for better mobile control
 					autoRotate // gentle auto‑spin when idle
-					autoRotateSpeed={1.5} // faster auto‑rotate rate
+					autoRotateSpeed={1.2} // slower auto‑rotate for mobile battery
 					maxPolarAngle={Math.PI * 0.8}
 					minPolarAngle={Math.PI * 0.2}
 					target={[0, -0.5, 0]} // consistent target - slightly lower to center globe
 					makeDefault
+					touches={{
+						ONE: THREE.TOUCH.ROTATE,
+						TWO: THREE.TOUCH.DOLLY_PAN
+					}}
 				/>
 			</Canvas>
 		</div>

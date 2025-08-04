@@ -48,7 +48,7 @@ export const HeroSection = () => {
 				/>
 				<div className="absolute inset-0 bg-black/60" />
 				{/* Gradient blend to rest of website - sharp transition */}
-				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-10" />
+				<div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-black/20 via-black/60 to-black z-[5]" />
 
 				{/* AVAILABILITY BADGE - Top Left of entire screen with animation */}
 				<div
@@ -168,9 +168,9 @@ export const HeroSection = () => {
 							<div className="size-2 rounded-full bg-indigo-400/80 shadow-[0_0_6px_rgba(129,140,248,0.5)]" />
 						</HeroOrbit>
 
-						{/* centered globe - expanded for better touch */}
-						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto">
-							<div className="w-[700px] h-[700px] pointer-events-auto">
+						{/* centered globe - responsive sizing for mobile */}
+						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto z-[8]">
+							<div className="w-[280px] h-[280px] sm:w-[550px] sm:h-[550px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px] pointer-events-auto">
 								<Globe onGlobeLoaded={handleGlobeLoaded} />
 							</div>
 						</div>
