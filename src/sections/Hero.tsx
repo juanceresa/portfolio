@@ -69,7 +69,7 @@ export const HeroSection = () => {
 					</div>
 				</div>
 
-				<div className="container mx-auto relative">
+				<div className="container mx-auto relative overflow-visible">
 					{/* BACKGROUND */}
 					<div className="absolute inset-0 pointer-events-none z-0">
 						{/* rings */}
@@ -169,15 +169,15 @@ export const HeroSection = () => {
 						</HeroOrbit>
 
 						{/* centered globe - responsive sizing for mobile */}
-						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto z-[8]">
-							<div className="w-[350px] h-[350px] sm:w-[550px] sm:h-[550px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px] pointer-events-auto">
+						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto z-[8] overflow-visible">
+							<div className="w-[350px] h-[350px] sm:w-[700px] sm:h-[700px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px] pointer-events-auto">
 								<Globe onGlobeLoaded={handleGlobeLoaded} />
 							</div>
 						</div>
 					</div>
 
 					{/* FOREGROUND CONTENT - Mobile centered position, desktop left aligned */}
-					<div className="absolute left-1/2 -translate-x-1/2 md:left-4 lg:left-8 xl:left-12 md:translate-x-0 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-xs md:max-w-sm lg:max-w-md">
+					<div className="absolute left-1/2 -translate-x-1/2 md:left-1/4 lg:left-[14%] xl:left-1/4 md:-translate-x-1/2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-sm sm:max-w-md md:max-w-sm lg:max-w-xs">
 						{/* <Image
 							src={memojiImage}
 							alt="person behind laptop"
@@ -194,7 +194,7 @@ export const HeroSection = () => {
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
 						<p
-							className={`mt-4 text-white/60 text-sm sm:text-base md:text-lg transition-all duration-1000 ease-out delay-200 ${
+							className={`mt-4 text-white/75 text-sm sm:text-base md:text-lg lg:text-xl font-medium md:font-normal transition-all duration-1000 ease-out delay-200 ${
 								textAnimated
 									? "translate-y-0 opacity-100"
 									: "translate-y-12 opacity-0"
