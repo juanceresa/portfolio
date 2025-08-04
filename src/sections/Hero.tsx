@@ -32,7 +32,7 @@ export const HeroSection = () => {
 		<>
 			{!globeReady && <LoadingScreen />}
 			<div
-				className={`relative py-40 md:py-56 lg:py-96 overflow-hidden transition-opacity duration-500 ${
+				className={`relative py-64 sm:py-80 md:py-80 lg:py-96 overflow-hidden transition-opacity duration-500 ${
 					globeReady ? "opacity-100" : "opacity-0"
 				}`}
 			>
@@ -58,12 +58,12 @@ export const HeroSection = () => {
 							: "-translate-y-8 opacity-0"
 					}`}
 				>
-					<div className="bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-2 rounded-lg pointer-events-auto">
-						<div className="relative size-3">
+					<div className="bg-gray-950 border border-gray-800 px-2 py-0.5 md:px-4 md:py-1.5 inline-flex items-center gap-1 md:gap-2 rounded-md md:rounded-lg pointer-events-auto">
+						<div className="relative size-1.5 md:size-3">
 							<div className="absolute size-full animate-ping rounded-full bg-green-300 opacity-65"></div>
 							<div className="size-full rounded-full bg-green-400 drop-shadow-[0_0_4px_rgba(34,197,94,0.5)]"></div>
 						</div>
-						<span className="text-sm font-medium">
+						<span className="text-[10px] md:text-sm font-medium">
 							Available for new projects
 						</span>
 					</div>
@@ -170,14 +170,14 @@ export const HeroSection = () => {
 
 						{/* centered globe - responsive sizing for mobile */}
 						<div className="absolute inset-0 flex justify-center items-center pointer-events-auto z-[8]">
-							<div className="w-[280px] h-[280px] sm:w-[550px] sm:h-[550px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px] pointer-events-auto">
+							<div className="w-[350px] h-[350px] sm:w-[550px] sm:h-[550px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px] pointer-events-auto">
 								<Globe onGlobeLoaded={handleGlobeLoaded} />
 							</div>
 						</div>
 					</div>
 
-					{/* FOREGROUND CONTENT - Far Left */}
-					<div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-sm">
+					{/* FOREGROUND CONTENT - Mobile centered position, desktop left aligned */}
+					<div className="absolute left-1/2 -translate-x-1/2 md:left-4 lg:left-8 xl:left-12 md:translate-x-0 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-xs md:max-w-sm lg:max-w-md">
 						{/* <Image
 							src={memojiImage}
 							alt="person behind laptop"
@@ -194,7 +194,7 @@ export const HeroSection = () => {
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
 						<p
-							className={`mt-4 text-white/60 md:text-lg max-w-xs transition-all duration-1000 ease-out delay-200 ${
+							className={`mt-4 text-white/60 text-sm sm:text-base md:text-lg transition-all duration-1000 ease-out delay-200 ${
 								textAnimated
 									? "translate-y-0 opacity-100"
 									: "translate-y-12 opacity-0"
