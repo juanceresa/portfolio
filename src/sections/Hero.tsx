@@ -69,7 +69,7 @@ export const HeroSection = () => {
 					</div>
 				</div>
 
-				<div className="container mx-auto relative overflow-visible">
+				<div className="w-full mx-auto relative overflow-visible">
 					{/* BACKGROUND */}
 					<div className="absolute inset-0 pointer-events-none z-0">
 						{/* rings */}
@@ -177,7 +177,7 @@ export const HeroSection = () => {
 					</div>
 
 					{/* FOREGROUND CONTENT - Mobile centered position, desktop left aligned */}
-					<div className="absolute left-1/2 -translate-x-1/2 md:left-1/4 lg:left-[14%] xl:left-1/4 md:-translate-x-1/2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto max-w-sm sm:max-w-md md:max-w-sm lg:max-w-xs">
+					<div className="absolute left-[52%] -translate-x-1/2 md:left-1/4 lg:left-[14%] xl:left-1/4 md:-translate-x-1/2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start text-left pointer-events-auto pl-4 md:pl-0 max-w-lg sm:max-w-xl md:max-w-sm lg:max-w-xs">
 						{/* <Image
 							src={memojiImage}
 							alt="person behind laptop"
@@ -185,7 +185,7 @@ export const HeroSection = () => {
 						/> */}
 
 						<h1
-							className={`mt-8 font-serif text-3xl md:text-5xl tracking-wide transition-all duration-1000 ease-out ${
+							className={`mt-8 font-serif text-3xl md:text-5xl tracking-wide whitespace-nowrap md:whitespace-normal drop-shadow-lg md:drop-shadow-none transition-all duration-1000 ease-out ${
 								textAnimated
 									? "translate-y-0 opacity-100"
 									: "translate-y-12 opacity-0"
@@ -194,7 +194,7 @@ export const HeroSection = () => {
 							Hi, I&apos;m Juan Ceresa.
 						</h1>
 						<p
-							className={`mt-4 text-white/75 text-sm sm:text-base md:text-lg lg:text-xl font-medium md:font-normal transition-all duration-1000 ease-out delay-200 ${
+							className={`mt-4 text-white bg-black/30 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-lg md:rounded-none px-2 md:px-0 py-1 md:py-0 md:text-white/75 text-sm sm:text-base md:text-lg lg:text-xl font-medium md:font-normal transition-all duration-1000 ease-out delay-200 ${
 								textAnimated
 									? "translate-y-0 opacity-100"
 									: "translate-y-12 opacity-0"
@@ -206,7 +206,7 @@ export const HeroSection = () => {
 
 						{/* BUTTON - Below description with animation */}
 						<div
-							className={`mt-4 transition-all duration-1000 ease-out delay-500 ${
+							className={`mt-4 self-center pr-4 lg:pr-9 transition-all duration-1000 ease-out delay-500 ${
 								textAnimated
 									? "translate-y-0 opacity-100"
 									: "translate-y-12 opacity-0"
