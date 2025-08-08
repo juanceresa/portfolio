@@ -32,39 +32,43 @@ export function Button({
 	return (
 		<Component
 			className={cn(
-				// remove h-16 w-40, add  md:col-span-2
-				"bg-transparent relative text-xl p-[1px] overflow-hidden md:col-span-2 md:row-span-1",
+				// Container - static, no animation
+				"relative overflow-hidden p-[2px] md:col-span-2 md:row-span-1 z-0",
 				containerClassName
 			)}
 			style={{
 				borderRadius: borderRadius,
+				background: `conic-gradient(from 0deg, transparent 0%, transparent 12%, #10b981 16%, #ffffff 18%, #10b981 20%, transparent 24%, transparent 100%)`,
 			}}
 			{...otherProps}
 		>
+			{/* Rotating gradient overlay - only this spins */}
 			<div
-				className="absolute inset-0 rounde-[1.75rem]"
-				style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
-			>
-				<MovingBorder duration={duration} rx="30%" ry="30%">
-					<div
-						className={cn(
-							"h-20 w-20 opacity-[0.8] bg-[radial-gradient(#10b981_40%,#ffffff_50%,transparent_60%)]",
-							borderClassName
-						)}
-					/>
-				</MovingBorder>
-			</div>
-
-			<div
-				className={cn(
-					"relative bg-slate-900/[0.] border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
-					className
-				)}
+				className="absolute inset-0 animate-spin z-0 pointer-events-none"
 				style={{
-					borderRadius: `calc(${borderRadius} * 0.96)`,
+					background: `conic-gradient(from 0deg, transparent 0%, transparent 12%, #10b981 16%, #ffffff 18%, #10b981 20%, transparent 24%, transparent 100%)`,
+					borderRadius: borderRadius,
+					animationDuration: `${duration || 4000}ms`,
+				}}
+			></div>
+
+			{/* Content Layer - BentoCard that maintains full height */}
+			<div 
+				className={cn(
+					// Exact BentoCard structure with mouse lighting - full height maintained
+					"card group rounded-3xl relative overflow-hidden h-full w-full z-10",
+					"bg-gray-900 border border-white/10", // Solid background to cover center
+					"before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-500 before:z-20",
+					"before:bg-[radial-gradient(600px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(255,255,255,0.1),transparent_40%)]",
+					"hover:before:opacity-100"
+				)}
+				style={{ 
+					borderRadius: `calc(${borderRadius} * 0.95)`,
 				}}
 			>
-				{children}
+				<div className={cn("card-content relative z-30 h-full p-6", className)}>
+					{children}
+				</div>
 			</div>
 		</Component>
 	);

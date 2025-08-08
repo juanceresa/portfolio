@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/MovingBorders";
 import { SectionHeader } from "@/components/SectionHeader";
 
@@ -34,8 +34,32 @@ export const workExperience = [
 ];
 
 const Experience = () => {
+	useEffect(() => {
+		const experienceSection = document.getElementById("experience");
+
+		if (!experienceSection) return;
+
+		const handleMouseMove = (e: MouseEvent) => {
+			const cards = Array.from(experienceSection.getElementsByClassName("card"));
+			for (const card of cards) {
+				const rect = card.getBoundingClientRect();
+				const x = e.clientX - rect.left;
+				const y = e.clientY - rect.top;
+
+				(card as HTMLDivElement).style.setProperty("--mouse-x", `${x}px`);
+				(card as HTMLDivElement).style.setProperty("--mouse-y", `${y}px`);
+			}
+		};
+
+		experienceSection.addEventListener("mousemove", handleMouseMove);
+
+		return () => {
+			experienceSection.removeEventListener("mousemove", handleMouseMove);
+		};
+	}, []);
+
 	return (
-		<section className="py-20">
+		<section id="experience" className="py-20">
 			<div className="container">
 				<SectionHeader
 					title="My Work Experience"
@@ -50,9 +74,6 @@ const Experience = () => {
 						duration={Math.floor(Math.random() * 10000) + 10000}
 						borderRadius="1.75rem"
 						style={{
-							background: "rgb(4,7,29)",
-							backgroundColor:
-								"linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
 							borderRadius: `calc(1.75rem* 0.96)`,
 						}}
 						className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800"
