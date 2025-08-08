@@ -1,35 +1,36 @@
 import React, { useEffect } from "react";
+import Image from "next/image";
 import { Button } from "@/components/MovingBorders";
 import { SectionHeader } from "@/components/SectionHeader";
 
 export const workExperience = [
 	{
 		id: 1,
-		title: "Frontend Engineer Intern",
-		desc: "Assisted in the development of a web-based platform using React.js, enhancing interactivity.",
+		title: "Backend Systems",
+		desc: "Automated ingestion of 100K+ academic records, eliminating manual workflows and saving 120 researcher hours/month.",
 		className: "md:col-span-2",
-		thumbnail: "/exp1.svg",
+		thumbnail: "/UGR_(3).svg",
 	},
 	{
 		id: 2,
-		title: "Mobile App Dev - JSM Tech",
-		desc: "Designed and developed mobile app for both iOS & Android platforms using React Native.",
+		title: "Strategy",
+		desc: "Sized ulcerative colitis market and mapped 3 high-value patient segments for Omvoh launch strategy.",
 		className: "md:col-span-2",
-		thumbnail: "/exp2.svg",
+		thumbnail: "/Eli_Lilly_and_Company.svg",
 	},
 	{
 		id: 3,
-		title: "Freelance App Dev Project",
-		desc: "Led the dev of a mobile app for a client, from initial concept to deployment on app stores.",
+		title: "Gen-AI",
+		desc: "Audited 10K+ lines of model-generated Python, ranking in top 5% for accuracy over 4-month project cycle.",
 		className: "md:col-span-2",
-		thumbnail: "/exp3.svg",
+		thumbnail: "/logo.svg",
 	},
 	{
 		id: 4,
-		title: "Lead Frontend Developer",
-		desc: "Developed and maintained user-facing features using modern frontend technologies.",
+		title: "Consulting",
+		desc: "Advised premium gifts strategy on customer experience optimization, delivering insights that contributed to $4M in donor commitments.",
 		className: "md:col-span-2",
-		thumbnail: "/exp4.svg",
+		thumbnail: "/university-of-michigan-3.svg",
 	},
 ];
 
@@ -79,10 +80,12 @@ const Experience = () => {
 						className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800"
 					>
 						<div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
-							<img
+							<Image
 								src={card.thumbnail}
-								alt={card.thumbnail}
-								className="lg:w-32 md:w-20 w-16"
+								alt={card.title}
+								width={128}
+								height={128}
+								className="lg:w-32 md:w-20 w-16 object-contain"
 							/>
 							<div className="lg:ms-5">
 								<h3 className="font-serif text-xl md:text-2xl text-white font-bold text-start">
@@ -102,4 +105,3 @@ const Experience = () => {
 };
 
 export default Experience;
-
