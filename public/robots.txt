@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://juanceresa.dev/sitemap.xml
+
+# Optimize crawl budget
+Crawl-delay: 1
+
+# Block irrelevant paths (if any)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /node_modules/
+
+# Allow important assets
+Allow: /assets/
+Allow: /images/
+Allow: /*.css$
+Allow: /*.js$
