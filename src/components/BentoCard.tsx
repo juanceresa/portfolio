@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 interface Props {
 	children: React.ReactNode;
 	className?: string;
+	style?: React.CSSProperties;
 }
 
 const BentoCard = (props: Props) => {
