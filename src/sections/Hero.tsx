@@ -212,9 +212,17 @@ export const HeroSection = () => {
 									: "translate-y-12 opacity-0"
 							}`}
 						>
-							<a href="#about">
+							<a 
+								href="#about" 
+								onClick={(e) => {
+									e.preventDefault();
+									document.getElementById('about')?.scrollIntoView({ 
+										behavior: 'smooth' 
+									});
+								}}
+							>
 								<MagicButton
-									title="Show my work"
+									title="Explore More"
 									icon={<FaLocationArrow />}
 									position="right"
 								/>

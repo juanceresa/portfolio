@@ -56,6 +56,7 @@ export const ProjectSection = () => {
 					title="Real-world Results"
 					eyebrow="Featured Projects"
 					description="See how I transformed concepts into engaging digital experience."
+					link={{ href: "/projects", text: "View All Projects" }}
 				/>
 				<div className="flex flex-col mt-10 gap-20">
 					{portfolioProjects.map((project, projectindex) => (
