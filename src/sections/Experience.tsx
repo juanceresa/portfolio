@@ -63,9 +63,9 @@ const Experience = () => {
 		<section id="experience" className="py-20">
 			<div className="container">
 				<SectionHeader
-					title="My Work Experience"
-					eyebrow="Career Journey"
-					description="Explore the milestones and achievements that have shaped my professional path."
+					title="Cross-Industry Impact"
+					eyebrow="Experience"
+					description="Healthcare strategy, AI engineering, and backend systems across diverse industries."
 				/>
 
 				<div className="w-full mt-12 grid lg:grid-cols-4 grid-cols-1 gap-10">

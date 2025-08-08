@@ -53,9 +53,9 @@ export const ProjectSection = () => {
 		<section className="pb-16 lg:py-24">
 			<div className="container">
 				<SectionHeader
-					title="Real-world Results"
-					eyebrow="Featured Projects"
-					description="See how I transformed concepts into engaging digital experience."
+					title="Featured Work"
+					eyebrow="Projects"
+					description="AI experiments, full-stack solutions, and cross-domain technology projects."
 					link={{ href: "/projects", text: "View All Projects" }}
 				/>
 				<div className="flex flex-col mt-10 gap-20">

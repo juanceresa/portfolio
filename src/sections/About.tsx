@@ -79,8 +79,8 @@ export const AboutSection = () => {
 			<div className="container">
 				<SectionHeader
 					eyebrow="About Me"
-					title="A Glimpse into My World"
-					description="Learn more about who I am, what I do, and what inspires me."
+					title="Tech Evangelist"
+					description="Building my knowledge stack one technology, one language, one industry at a time."
 					link={{ href: "/about", text: "More About Me" }}
 				/>
 				<div id="bento" className="mt-20 flex flex-col gap-8">
@@ -91,9 +91,8 @@ export const AboutSection = () => {
 
 						<BentoCard className="h-[320px] md:col-span-3 lg:col-span-2">
 							<CardHeader
-								title="My Tech Stack"
-								description="Explore the technologies and tools I use to craft digital
-								experiences."
+								title="Tech Stack"
+								description="Python, C++, AI, and web technologies across diverse projects."
 								className=""
 							/>
 

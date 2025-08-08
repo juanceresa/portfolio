@@ -200,8 +200,7 @@ export const HeroSection = () => {
 									: "translate-y-12 opacity-0"
 							}`}
 						>
-							Bilingual technologist with a track record of turning complex
-							problems into real-world impact.
+							Bilingual technologist exploring AI, backends, and data analytics across industries.
 						</p>
 
 						{/* BUTTON - Below description with animation */}
