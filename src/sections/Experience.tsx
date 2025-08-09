@@ -77,7 +77,7 @@ const Experience = () => {
 							// Pass the className to containerClassName to apply grid spans
 							containerClassName={card.className}
 							// Vary the duration for different speeds (in seconds)
-							duration={Math.floor(Math.random() * 4) + 6}
+							duration={Math.floor(Math.random() * 10) + 20}
 							borderRadius="1.75rem"
 							className="text-black dark:text-white border-neutral-200 dark:border-slate-800"
 						>
