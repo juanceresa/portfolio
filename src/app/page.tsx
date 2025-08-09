@@ -5,7 +5,7 @@ import { HeroSection } from "@/sections/Hero";
 import { AboutSection } from "@/sections/About";
 import { ProjectSection } from "@/sections/Projects";
 import Experience from "@/sections/Experience";
-import { CallToAction } from "@/components/CallToAction";
+import { CallToAction } from "@/sections/CallToAction";
 
 
 export default function Home() {
