@@ -12,15 +12,18 @@ import BentoCard from "@/components/BentoCard";
 export const ProjectSection = () => {
 	const portfolioProjects = [
 		{
-			company: "Acme Corp",
-			year: "2022",
-			title: "Dark Saas Landing Page",
+			company: "EC3 Research",
+			year: "2025",
+			title: "BigQuery Academic Research Data Pipeline",
 			results: [
-				{ title: "Enhanced user experience by 40%" },
-				{ title: "Improved site speed by 50%" },
-				{ title: "Increased mobile traffic by 35%" },
+				{ title: "Automated ingestion of 120K+ academic records" },
+				{ title: "Cross-database researcher matching (OpenAlex, Scopus)" },
+				{
+					title:
+						"Eliminated manual workflows, saved 120 researcher hours/month",
+				},
 			],
-			link: "https://youtu.be/4k7IdSLxh6w",
+			link: "https://github.com/juanceresa/BigQuery",
 			image: darkSaasLandingPage,
 		},
 		{
