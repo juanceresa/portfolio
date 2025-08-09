@@ -1,13 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	motion,
-	useAnimationFrame,
-	useMotionTemplate,
 	useMotionValue,
-	useTransform,
+	useMotionTemplate,
+	animate,
 } from "framer-motion";
-import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export function Button({
@@ -16,7 +14,7 @@ export function Button({
 	as: Component = "button",
 	containerClassName,
 	borderClassName,
-	duration,
+	duration = 8,
 	className,
 	...otherProps
 }: {
@@ -29,56 +27,162 @@ export function Button({
 	className?: string;
 	[key: string]: any;
 }) {
+	// Motion values for gradient animation
+	const gradientAngle = useMotionValue(0);
+
+	// Create a motion template for the gradient
+	const backgroundImage = useMotionTemplate`conic-gradient(from ${gradientAngle}deg at 50% 50%,
+		transparent 0deg,
+		transparent 80deg,
+		#10b981 85deg,
+		#ffffff 90deg,
+		#10b981 95deg,
+		transparent 100deg,
+		transparent 360deg)`;
+
+	useEffect(() => {
+		// Animate the gradient rotation continuously
+		const controls = animate(gradientAngle, 360, {
+			duration: duration,
+			ease: "linear",
+			repeat: Infinity,
+			repeatType: "loop",
+		});
+
+		return () => controls.stop();
+	}, [duration, gradientAngle]);
+
 	return (
 		<Component
-			className={cn(
-				// Container - static, no animation
-				"relative overflow-hidden md:col-span-2 md:row-span-1 z-0",
-				containerClassName
-			)}
+			className={cn("relative overflow-hidden z-0", containerClassName)}
 			style={{
 				borderRadius: borderRadius,
-				background: `conic-gradient(from 0deg, transparent 0%, transparent 12%, #10b981 16%, #ffffff 18%, #10b981 20%, transparent 24%, transparent 100%)`,
 			}}
 			{...otherProps}
 		>
-			{/* Rotating gradient overlay - only this spins */}
-			<div
-				className="absolute inset-0 animate-spin z-0 pointer-events-none"
+			{/* Animated gradient border */}
+			<motion.div
+				className="absolute inset-0 z-0 pointer-events-none"
 				style={{
-					background: `conic-gradient(from 0deg, transparent 0%, transparent 12%, #10b981 16%, #ffffff 18%, #10b981 20%, transparent 24%, transparent 100%)`,
+					backgroundImage,
 					borderRadius: borderRadius,
-					animationDuration: `${duration || 4000}ms`,
 				}}
-			></div>
+			/>
 
-			{/* Content Layer - Dark cover with blur overlay */}
+			{/* Content Layer */}
 			<div
 				className={cn(
-					// Exact BentoCard structure with mouse lighting - full height maintained
 					"card group rounded-3xl relative overflow-hidden h-full w-full z-10",
-					"border border-white/10", // No background here
+					"border border-white/10",
 					"before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-500 before:z-20",
 					"before:bg-[radial-gradient(600px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(255,255,255,0.1),transparent_40%)]",
 					"hover:before:opacity-100"
 				)}
 				style={{
-					borderRadius: `calc(${borderRadius} * 0.95)`,
+					borderRadius: `calc(${borderRadius} * 0.96)`,
 				}}
 			>
-				{/* Solid dark cover to block gradient */}
+				{/* Solid dark background */}
 				<div
 					className="absolute inset-0 bg-black rounded-3xl z-0"
-					style={{ borderRadius: `calc(${borderRadius} * 0.95)` }}
-				></div>
+					style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
+				/>
 
-				{/* Blur overlay on top to mimic BentoCard appearance */}
+				{/* Blur overlay */}
 				<div
 					className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-3xl z-5"
-					style={{ borderRadius: `calc(${borderRadius} * 0.95)` }}
-				></div>
+					style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
+				/>
 
-				<div className={cn("card-content relative z-30 h-full p-6", className)}>
+				<div className={cn("card-content relative z-30 h-full", className)}>
+					{children}
+				</div>
+			</div>
+		</Component>
+	);
+}
+
+// Alternative implementation with moving dot border
+export function ButtonWithMovingDot({
+	borderRadius = "1.75rem",
+	children,
+	as: Component = "button",
+	containerClassName,
+	borderClassName,
+	duration = 3,
+	className,
+	...otherProps
+}: {
+	borderRadius?: string;
+	children: React.ReactNode;
+	as?: any;
+	containerClassName?: string;
+	borderClassName?: string;
+	duration?: number;
+	className?: string;
+	[key: string]: any;
+}) {
+	// Motion values for the moving light position
+	const angle = useMotionValue(0);
+
+	// Calculate x and y positions based on angle
+	const backgroundImage = useMotionTemplate`radial-gradient(circle at ${angle}% 50%, #10b981 0%, #ffffff 2%, #10b981 4%, transparent 8%, transparent 100%)`;
+
+	useEffect(() => {
+		// Animate the position around the border
+		const controls = animate(angle, [0, 25, 50, 75, 100], {
+			duration: duration,
+			ease: "linear",
+			repeat: Infinity,
+			repeatType: "loop",
+		});
+
+		return () => controls.stop();
+	}, [duration, angle]);
+
+	return (
+		<Component
+			className={cn("relative overflow-hidden z-0", containerClassName)}
+			style={{
+				borderRadius: borderRadius,
+			}}
+			{...otherProps}
+		>
+			{/* Animated gradient border */}
+			<motion.div
+				className="absolute inset-0 z-0 pointer-events-none"
+				style={{
+					background: backgroundImage,
+					borderRadius: borderRadius,
+				}}
+			/>
+
+			{/* Content Layer */}
+			<div
+				className={cn(
+					"card group rounded-3xl relative overflow-hidden h-full w-full z-10",
+					"border border-white/10",
+					"before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-500 before:z-20",
+					"before:bg-[radial-gradient(600px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(255,255,255,0.1),transparent_40%)]",
+					"hover:before:opacity-100"
+				)}
+				style={{
+					borderRadius: `calc(${borderRadius} * 0.96)`,
+				}}
+			>
+				{/* Solid dark background */}
+				<div
+					className="absolute inset-0 bg-black rounded-3xl z-0"
+					style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
+				/>
+
+				{/* Blur overlay */}
+				<div
+					className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-3xl z-5"
+					style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
+				/>
+
+				<div className={cn("card-content relative z-30 h-full", className)}>
 					{children}
 				</div>
 			</div>
@@ -99,25 +203,39 @@ export const MovingBorder = ({
 	ry?: string;
 	[key: string]: any;
 }) => {
-	const pathRef = useRef<any>();
-	const progress = useMotionValue<number>(0);
+	const pathRef = React.useRef<SVGRectElement>(null);
+	const progress = useMotionValue(0);
 
-	useAnimationFrame((time) => {
-		const length = pathRef.current?.getTotalLength();
-		if (length) {
-			const pxPerMillisecond = length / duration;
-			progress.set((time * pxPerMillisecond) % length);
-		}
-	});
+	useEffect(() => {
+		if (!pathRef.current) return;
 
-	const x = useTransform(
-		progress,
-		(val) => pathRef.current?.getPointAtLength(val).x
-	);
-	const y = useTransform(
-		progress,
-		(val) => pathRef.current?.getPointAtLength(val).y
-	);
+		const length = pathRef.current.getTotalLength();
+
+		const controls = animate(progress, length, {
+			duration: duration / 1000,
+			ease: "linear",
+			repeat: Infinity,
+			repeatType: "loop",
+		});
+
+		return () => controls.stop();
+	}, [duration, progress]);
+
+	const x = useMotionValue(0);
+	const y = useMotionValue(0);
+
+	useEffect(() => {
+		const unsubscribe = progress.on("change", (val) => {
+			if (!pathRef.current) return;
+			const point = pathRef.current.getPointAtLength(
+				val % pathRef.current.getTotalLength()
+			);
+			x.set(point.x);
+			y.set(point.y);
+		});
+
+		return unsubscribe;
+	}, [progress, x, y]);
 
 	const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
 
