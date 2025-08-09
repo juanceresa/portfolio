@@ -33,11 +33,11 @@ export function Button({
 	// Create a motion template for the gradient
 	const backgroundImage = useMotionTemplate`conic-gradient(from ${gradientAngle}deg at 50% 50%,
 		transparent 0deg,
+		transparent 50deg,
+		#10b981 50deg,
+		#ffffff 60deg,
+		#10b981 70deg,
 		transparent 80deg,
-		#10b981 85deg,
-		#ffffff 90deg,
-		#10b981 95deg,
-		transparent 100deg,
 		transparent 360deg)`;
 
 	useEffect(() => {
