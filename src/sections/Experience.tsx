@@ -75,11 +75,11 @@ const Experience = () => {
 						duration={Math.floor(Math.random() * 10000) + 10000}
 						borderRadius="1.75rem"
 						style={{
-							borderRadius: `calc(1.75rem* 0.96)`,
+							borderRadius: `calc(1.75rem)`,
 						}}
 						className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800"
 					>
-						<div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
+						<div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-4 gap-2">
 							<Image
 								src={card.thumbnail}
 								alt={card.title}

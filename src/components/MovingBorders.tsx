@@ -33,7 +33,7 @@ export function Button({
 		<Component
 			className={cn(
 				// Container - static, no animation
-				"relative overflow-hidden p-[2px] md:col-span-2 md:row-span-1 z-0",
+				"relative overflow-hidden md:col-span-2 md:row-span-1 z-0",
 				containerClassName
 			)}
 			style={{
@@ -53,7 +53,7 @@ export function Button({
 			></div>
 
 			{/* Content Layer - Dark cover with blur overlay */}
-			<div 
+			<div
 				className={cn(
 					// Exact BentoCard structure with mouse lighting - full height maintained
 					"card group rounded-3xl relative overflow-hidden h-full w-full z-10",
@@ -62,22 +62,22 @@ export function Button({
 					"before:bg-[radial-gradient(600px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(255,255,255,0.1),transparent_40%)]",
 					"hover:before:opacity-100"
 				)}
-				style={{ 
+				style={{
 					borderRadius: `calc(${borderRadius} * 0.95)`,
 				}}
 			>
 				{/* Solid dark cover to block gradient */}
-				<div 
+				<div
 					className="absolute inset-0 bg-black rounded-3xl z-0"
 					style={{ borderRadius: `calc(${borderRadius} * 0.95)` }}
 				></div>
-				
+
 				{/* Blur overlay on top to mimic BentoCard appearance */}
-				<div 
+				<div
 					className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-3xl z-5"
 					style={{ borderRadius: `calc(${borderRadius} * 0.95)` }}
 				></div>
-				
+
 				<div className={cn("card-content relative z-30 h-full p-6", className)}>
 					{children}
 				</div>
