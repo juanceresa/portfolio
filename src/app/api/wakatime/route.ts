@@ -16,7 +16,7 @@ export async function GET() {
       headers: {
         Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString('base64')}`,
       },
-      next: { revalidate: 3600 },
+      next: { revalidate: 1800 },
     });
 
     if (!last30DaysResponse.ok) {

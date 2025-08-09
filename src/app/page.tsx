@@ -5,6 +5,7 @@ import { HeroSection } from "@/sections/Hero";
 import { AboutSection } from "@/sections/About";
 import { ProjectSection } from "@/sections/Projects";
 import Experience from "@/sections/Experience";
+import { CallToAction } from "@/components/CallToAction";
 
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <AboutSection />
       <Experience />
       <ProjectSection />
+      <CallToAction />
     </div>
   );
 }

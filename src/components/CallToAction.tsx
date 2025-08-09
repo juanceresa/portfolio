@@ -1,6 +1,6 @@
 "use client";
-import { StarsImage } from "@/assets/stars.png";
-import { GridLines } from "@/assets/grid-lines.png";
+import StarsImage from "@/assets/images/stars.png";
+import GridLinesImage from "@/assets/images/grid-lines.png";
 
 import {
 	motion,
@@ -9,7 +9,7 @@ import {
 	useTransform,
 } from "framer-motion";
 import { useRef } from "react";
-import useRelativeMousePosition from "@/hooks/useRelativeMousePosition";
+import useRelativeMousePosition from "@/components/hooks/useRelativeMousePosition";
 
 export const CallToAction = () => {
 	const sectionRef = useRef<HTMLElement>(null);
@@ -50,19 +50,19 @@ export const CallToAction = () => {
 					<div
 						className="absolute inset-0 bg-[rgb(74,32,138)] bg-blend-overlay [mask-image:radial-gradient(50%_50%_at_50%_35%,black,transparent)] group-hover:opacity-0 transition duration-700"
 						style={{
-							backgroundImage: `url(${GridLines.src})`,
+							backgroundImage: `url(${GridLinesImage.src})`,
 						}}
 					></div>
 					<motion.div
 						className="absolute inset-0 bg-[rgb(74,32,138)] bg-blend-overlay opacity-0 group-hover:opacity-100 transition duration-700"
 						style={{
 							maskImage,
-							backgroundImage: `url(${GridLines.src})`,
+							backgroundImage: `url(${GridLinesImage.src})`,
 						}}
 					></motion.div>
 					<div className="relative">
 						<h2 className="text-5xl md:text-6xl text-center font-medium tracking-tighter max-w-sm mx-auto">
-							AI-driven SEO for everyone.
+							Lets get into contact.
 						</h2>
 						<p className="text-lg md:text-xl text-center text-white/70 tracking-tight px-5 mt-5 max-w-xs mx-auto">
 							Achieve clear, impactful results without the complexity.
