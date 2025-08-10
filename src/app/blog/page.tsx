@@ -1,6 +1,12 @@
 import UnderConstruction from '../UnderConstruction'
+import { Metadata } from 'next'
 
-export { generateMetadata } from '../UnderConstruction'
+export function generateMetadata(): Metadata {
+  return {
+    title: "Blog - Coming Soon",
+    description: "I'm preparing a blog where I'll share insights about web development, emerging technologies, coding tutorials, and lessons learned from real-world projects.",
+  }
+}
 
 export default function BlogPage() {
   return (

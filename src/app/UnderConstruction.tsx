@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 
 interface UnderConstructionProps {
-  title?: string
   description?: string
   pageTitle?: string
 }
@@ -37,18 +36,14 @@ const ConstructionIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export function generateMetadata({ 
-  title = "Under Construction", 
-  description = "This page is under construction" 
-}: UnderConstructionProps = {}): Metadata {
+export function generateMetadata(): Metadata {
   return {
-    title,
-    description,
+    title: "Under Construction",
+    description: "This page is under construction",
   }
 }
 
 export default function UnderConstruction({ 
-  title = "Under Construction",
   description = "This page is currently under construction. I'm working hard to bring something exciting here soon. Stay tuned!",
   pageTitle = "Under Construction"
 }: UnderConstructionProps) {
