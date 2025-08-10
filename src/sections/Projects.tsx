@@ -2,7 +2,7 @@ import React from "react";
 
 import darkSaasLandingPage from "@/assets/images/dark-saas-landing-page.png";
 import portfolio from "@/assets/images/portfolio.png";
-import aiStartupLandingPage from "@/assets/images/ai-startup-landing-page.png";
+import compare from "@/assets/images/compare.png";
 import Image from "next/image";
 import CheckCircleIcon from "@/assets/icons/check-circle.svg";
 import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
@@ -24,7 +24,7 @@ export const ProjectSection = () => {
 				},
 			],
 			link: "https://github.com/juanceresa/BigQuery",
-			image: darkSaasLandingPage,
+			image: compare,
 		},
 		{
 			company: "JuanCeresa.com",
