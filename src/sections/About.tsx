@@ -43,20 +43,8 @@ const toolboxItems = [
 		iconType: JavascriptIcon,
 	},
 	{
-		title: "HTML5",
-		iconType: HtmlIcon,
-	},
-	{
-		title: "CSS3",
-		iconType: CssIcon,
-	},
-	{
 		title: "React",
 		iconType: ReactIcon,
-	},
-	{
-		title: "Chrome",
-		iconType: ChromeIcon,
 	},
 	{
 		title: "Github",
@@ -114,12 +102,12 @@ export const AboutSection = () => {
 							<ToolboxItems
 								items={toolboxItems}
 								className=""
-								itemsWrapperClassName="animate-move-left [animation-duration:25s]"
+								itemsWrapperClassName="animate-[move-left_25s_linear_infinite]"
 							/>
 							<ToolboxItems
 								items={toolboxItems}
 								className="mt-6"
-								itemsWrapperClassName="animate-move-right [animation-duration:25s]"
+								itemsWrapperClassName="animate-[move-right_25s_linear_infinite]"
 							/>
 						</BentoCard>
 					</div>

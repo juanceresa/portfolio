@@ -23,7 +23,7 @@ export const ToolboxItems = ({
 		>
 			<div
 				className={twMerge(
-					"flex flex-none py-0.5 gap-6 pr-6",
+					"flex flex-none py-0.5 gap-6 pr-6 will-change-transform",
 					itemsWrapperClassName
 				)}
 			>
@@ -31,11 +31,13 @@ export const ToolboxItems = ({
 					<Fragment key={index}>
 						{items.map((item) => (
 							<div
-								key={item.title}
-								className="inline-flex items-center gap-4 py-2 px-3 outline outline-2 outline-white/10 rounded-lg"
+								key={`${item.title}-${index}`}
+								className="inline-flex items-center gap-4 py-2 px-3 outline outline-2 outline-white/10 rounded-lg flex-shrink-0"
 							>
-								<TechIcon component={item.iconType} />
-								<span className="font-semibold">{item.title}</span>
+								<div className="flex-shrink-0">
+									<TechIcon component={item.iconType} />
+								</div>
+								<span className="font-semibold whitespace-nowrap">{item.title}</span>
 							</div>
 						))}
 					</Fragment>
