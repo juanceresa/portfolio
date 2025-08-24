@@ -3,6 +3,8 @@ import React from "react";
 import darkSaasLandingPage from "@/assets/images/dark-saas-landing-page.png";
 import portfolio from "@/assets/images/portfolio.png";
 import compare from "@/assets/images/compare.png";
+import civic from "@/assets/images/civic.png";
+import professor from "@/assets/images/professor.png";
 import Image from "next/image";
 import CheckCircleIcon from "@/assets/icons/check-circle.svg";
 import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
@@ -11,6 +13,39 @@ import BentoCard from "@/components/BentoCard";
 
 export const ProjectSection = () => {
 	const portfolioProjects = [
+		{
+			company: "Academic Research",
+			year: "2025",
+			title: "The Civic LLM Working Paper",
+			results: [
+				{
+					title:
+						"Co-authored working paper on civic ontology integration in LLMs",
+				},
+				{ title: "Theorized civic, democratic process for LLM development" },
+				{
+					title:
+						"Posted as pre-print to SocArXiv, targeting journal submission",
+				},
+			],
+			link: "https://osf.io/preprints/socarxiv/xuk2g_v1",
+			linkText: "Pre-print",
+			image: civic,
+		},
+		{
+			company: "Huston-Tillotson University",
+			year: "2025",
+			title: "AI Professor Platform",
+			results: [
+				{ title: "Built with Pinecone vector database and Gemini 1.5 Flash" },
+				{
+					title: "Course-specific content indexing for targeted AI assistance",
+				},
+				{ title: "MVP deployed to 100 students, completely free access" },
+			],
+			link: "https://github.com/juanceresa/codename-prof",
+			image: professor,
+		},
 		{
 			company: "EC3 Research",
 			year: "2025",
@@ -33,7 +68,7 @@ export const ProjectSection = () => {
 			results: [
 				{ title: "Implemented smooth 60fps 3D animations" },
 				{ title: "Integrated live API data visualization" },
-				{ title: "Optimized Core Web Vitals performance" },
+				{ title: "Optimized Core Web Vitals performance (100 Real Experience Score)" },
 			],
 			link: "https://github.com/juanceresa/portfolio",
 			image: portfolio,
@@ -82,7 +117,7 @@ export const ProjectSection = () => {
 									</ul>
 									<a href={project.link}>
 										<button className="bg-white text-gray-950 h-12 w-full rounded-xl font-semibold inline-flex items-center justify-center gap-2 mt-8 md:w-auto px-8">
-											<span>Github</span>
+											<span>{project.linkText || "Github"}</span>
 											<ArrowUpRightIcon className="size-4" />
 										</button>
 									</a>

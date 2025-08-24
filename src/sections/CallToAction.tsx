@@ -70,10 +70,12 @@ export const CallToAction = () => {
 							Achieve clear, impactful results without the complexity.
 						</p>
 						<div className="flex justify-center mt-8">
-							<CallToActionButton>
-								Contact Me
-								<ArrowUpRightIcon className="size-4" />
-							</CallToActionButton>
+							<a href="mailto:juan@juanceresa.com">
+								<CallToActionButton>
+									Contact Me
+									<ArrowUpRightIcon className="size-4" />
+								</CallToActionButton>
+							</a>
 						</div>
 					</div>
 				</motion.div>

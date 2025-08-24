@@ -78,8 +78,8 @@ export const AboutSection = () => {
 		<div id="about" className="py-20 lg:py-28">
 			<div className="container">
 				<SectionHeader
-					eyebrow="About Me"
-					title="Tech Evangelist"
+					eyebrow="Explore My World"
+					title="Tech Enthusiast"
 					description="Building my knowledge stack one technology, one language, one industry at a time."
 					link={{ href: "/about", text: "More About Me" }}
 				/>
@@ -91,7 +91,7 @@ export const AboutSection = () => {
 
 						<BentoCard className="h-[320px] md:col-span-3 lg:col-span-2">
 							<CardHeader
-								title="Tech Stack"
+								title="My Stack"
 								description="Python, C++, AI, and web technologies across diverse projects."
 								className=""
 							/>
