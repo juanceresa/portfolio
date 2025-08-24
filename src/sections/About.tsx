@@ -9,6 +9,9 @@ import CssIcon from "@/assets/icons/css3.svg";
 import ReactIcon from "@/assets/icons/react.svg";
 import ChromeIcon from "@/assets/icons/chrome.svg";
 import GithubIcon from "@/assets/icons/github.svg";
+import PythonIcon from "@/assets/icons/Python-2.svg";
+import CplusplusIcon from "@/assets/icons/c-plus-plus-svgrepo-com.svg";
+import SqlIcon from "@/assets/icons/sql.svg";
 import dynamic from "next/dynamic";
 import { CardHeader } from "@/components/CardHeader";
 import { ToolboxItems } from "@/components/TollboxItems";
@@ -23,6 +26,18 @@ const BentoItemMapLocation = dynamic(() => import("@/components/MapLocation"), {
 });
 
 const toolboxItems = [
+	{
+		title: "Python",
+		iconType: PythonIcon,
+	},
+	{
+		title: "C++",
+		iconType: CplusplusIcon,
+	},
+	{
+		title: "SQL",
+		iconType: SqlIcon,
+	},
 	{
 		title: "JavaScript",
 		iconType: JavascriptIcon,
