@@ -11,46 +11,46 @@ export async function GET() {
   }
 
   try {
-    // Fetch last 30 days stats for rolling window
-    const last30DaysResponse = await fetch(`https://wakatime.com/api/v1/users/current/stats/last_30_days`, {
+    // Fetch last year stats for better representation
+    const lastYearResponse = await fetch(`https://wakatime.com/api/v1/users/current/stats/last_year`, {
       headers: {
         Authorization: `Basic ${Buffer.from(WAKATIME_API_KEY).toString('base64')}`,
       },
       next: { revalidate: 1800 },
     });
 
-    if (!last30DaysResponse.ok) {
-      throw new Error(`WakaTime API error: ${last30DaysResponse.status}`);
+    if (!lastYearResponse.ok) {
+      throw new Error(`WakaTime API error: ${lastYearResponse.status}`);
     }
 
-    const last30DaysData = await last30DaysResponse.json();
+    const lastYearData = await lastYearResponse.json();
 
     // Transform the data to match our component interface
     const transformedData = {
-      // Daily average from last 30 days
-      daily_average_text: last30DaysData.data.human_readable_daily_average || '0 mins',
+      // Daily average from last year
+      daily_average_text: lastYearData.data.human_readable_daily_average || '0 mins',
       
-      // Best day from last 30 days
-      best_day: last30DaysData.data.best_day ? {
-        date: last30DaysData.data.best_day.date,
-        text: last30DaysData.data.best_day.text,
-        total_seconds: last30DaysData.data.best_day.total_seconds,
+      // Best day from last year
+      best_day: lastYearData.data.best_day ? {
+        date: lastYearData.data.best_day.date,
+        text: lastYearData.data.best_day.text,
+        total_seconds: lastYearData.data.best_day.total_seconds,
       } : null,
       
-      // Top project from last 30 days
-      top_project: (last30DaysData.data.projects && last30DaysData.data.projects.length > 0) ? {
-        name: last30DaysData.data.projects[0].name,
-        text: last30DaysData.data.projects[0].text,
-        hours: last30DaysData.data.projects[0].hours,
-        minutes: last30DaysData.data.projects[0].minutes,
+      // Top project from last year
+      top_project: (lastYearData.data.projects && lastYearData.data.projects.length > 0) ? {
+        name: lastYearData.data.projects[0].name,
+        text: lastYearData.data.projects[0].text,
+        hours: lastYearData.data.projects[0].hours,
+        minutes: lastYearData.data.projects[0].minutes,
       } : null,
       
-      // Top language from last 30 days
-      top_language: (last30DaysData.data.languages && last30DaysData.data.languages.length > 0) ? {
-        name: last30DaysData.data.languages[0].name,
-        text: last30DaysData.data.languages[0].text,
-        hours: last30DaysData.data.languages[0].hours,
-        minutes: last30DaysData.data.languages[0].minutes,
+      // Top language from last year
+      top_language: (lastYearData.data.languages && lastYearData.data.languages.length > 0) ? {
+        name: lastYearData.data.languages[0].name,
+        text: lastYearData.data.languages[0].text,
+        hours: lastYearData.data.languages[0].hours,
+        minutes: lastYearData.data.languages[0].minutes,
       } : null,
     };
 

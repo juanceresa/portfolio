@@ -119,7 +119,7 @@ export const WakaTimeStats = () => {
 		return (
 			<div className="h-full flex flex-col">
 				<div className="mb-4">
-					<h3 className="text-white text-lg font-serif font-semibold">Stats This Month</h3>
+					<h3 className="text-white text-lg font-serif font-semibold">Stats This Year</h3>
 				</div>
 				<div className="flex items-center justify-center flex-1">
 					<div className="text-white/60 text-sm">{error}</div>
@@ -142,7 +142,7 @@ export const WakaTimeStats = () => {
 			<div className="mb-4">
         <div className="inline-flex items-center gap-2">
 				  <StarIcon className="size-9 text-yellow-400" />
-          <h3 className="text-white text-xl font-serif">Stats This Month</h3>
+          <h3 className="text-white text-xl font-serif">Stats This Year</h3>
         </div>
 			</div>
 
